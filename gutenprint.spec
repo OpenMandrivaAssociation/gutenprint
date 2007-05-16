@@ -227,10 +227,6 @@ to be able to print out of the GIMP on any printer.
 %prep
 # unpack main sources
 %setup -q -n gutenprint-%{version}%{extraversion}
-#setup -q -n gutenprint20060716
-
-# Fix portuguese translation
-perl -p -i -e 's/<Imagem>/<Image>/g' po/pt.po
 
 
 %build
@@ -267,14 +263,13 @@ export RPM_OPT_FLAGS="`echo %optflags |sed -e 's/-O3/-g/' |sed -e 's/-O2/-g/'`"
 	--disable-rpath \
 	--disable-libgutenprintui \
 	--enable-libgutenprintui2 \
+	--disable-static-genppd \
 	%enablegimpplugin \
 	--with-cups \
 	--with-ijs \
 	--with-foomatic \
 	--with-foomatic3 \
 	%enabledebug
-
-	#--disable-static-genppd \
 
 # Compile Gutenprint
 %make
@@ -425,7 +420,10 @@ exit 0
 # Restart the CUPS daemon when it is running, but do not start it when it
 # is not running. The restart of the CUPS daemon updates the CUPS-internal
 # PPD index
-/sbin/service cups condrestart || :
+# Do not restart on upgrades, as it is already restarted by post section.
+if [ $1 -eq 1 ]; then
+	/sbin/service cups condrestart || :
+fi
 
 %clean
 rm -rf %{buildroot}
