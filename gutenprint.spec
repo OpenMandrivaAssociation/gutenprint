@@ -1,17 +1,14 @@
-%define version 5.0.0
+%define version 5.0.0.99.1
 %define driverversion 5.0
 %define extraversion %nil
 #define extraversion -rc3
 %define release %mkrel 3
 %define gutenprintmajor 2
 %define libgutenprint %mklibname gutenprint %{gutenprintmajor}
-%define gutenprintuimajor 1
-%define libgutenprintui %mklibname gutenprintui_ %{gutenprintuimajor}
 %define gutenprintui2major 1
 %define libgutenprintui2 %mklibname gutenprintui2_ %{gutenprintui2major}
 
 %define corposerver %(perl -e 'print ("%release" =~ /mlcs/ ? 1 : 0)')
-%define mdv2007 %(perl -e 'print ("%release" =~ /mdv/ ? 1 : 0)')
 
 %if %{corposerver}
 %define gimpplugin 0
@@ -40,20 +37,17 @@ URL:		http://gimp-print.sourceforge.net/
 
 ##### GENERAL BUILDREQUIRES
 
-BuildRequires:	autoconf2.5, libtiff-devel, glib-devel
-%if !%mdv2007
-BuildRequires:	libgtk+-devel
-%endif
-BuildRequires:	libgtk+2-devel
-BuildRequires:	libjpeg-static-devel
-BuildRequires:	foomatic-db-engine, foomatic-db
-BuildRequires:	bison, flex, libijs-devel
-%ifarch x86_64
+BuildRequires:	autoconf2.5
+BuildRequires:	bison
+BuildRequires:	flex
+BuildRequires:	foomatic-db
+BuildRequires:	foomatic-db-engine
+BuildRequires:	glib-devel
 BuildRequires:	libcups-devel >= 1.2.0-0.5361.0mdk
-%else
-BuildRequires:	libcups-devel >= 1.2.0
-%endif
-BuildConflicts: libgutenprint, libgutenprint-devel
+BuildRequires:	libgtk+2-devel
+BuildRequires:	libijs-devel
+BuildRequires:	libjpeg-static-devel
+BuildRequires:	libtiff-devel
 
 %if %{gimpplugin}
 BuildRequires:	libgimp-devel
@@ -90,21 +84,6 @@ Requires:	%{libgutenprint} >= %{version}-%{release}
 Requires:       multiarch-utils
 Provides:       libgutenprint-devel = %{version}-%{release}
 Provides:       gutenprint-devel = %{version}-%{release}
-
-%if !%mdv2007
-%package -n %{libgutenprintui}
-Summary:	Shared library for Gutenprint GUI with GTK 1.x
-Group:		Publishing
-Provides:       libgutenprintui = %{version}-%{release}
-
-%package -n %{libgutenprintui}-devel
-Summary:	Headers and links for compiling against libgutenprintui
-Group:		Development/C
-Requires:	%{libgutenprintui} >= %{version}-%{release}
-Requires:       multiarch-utils
-Provides:       libgutenprintui-devel = %{version}-%{release}
-Provides:       libgutenprintui_-devel = %{version}-%{release}
-%endif
 
 %package -n %{libgutenprintui2}
 Summary:	Shared library for Gutenprint GUI with GTK 2.x
@@ -196,16 +175,6 @@ and by specialized CUPS drivers.
 These are the links and header files to compile applications which
 should use the libgutenprint library.
 
-%if !%mdv2007
-%description -n %{libgutenprintui}
-This is a GTK-1.x-based GUI library to create dialogs to control
-the Gutenprint printer drivers.
-
-%description -n %{libgutenprintui}-devel
-These are the links and header files to compile applications which
-should use the libgutenprintui library.
-%endif
-
 %description -n %{libgutenprintui2}
 This is a GTK-2.x-based GUI library to create dialogs to control
 the Gutenprint printer drivers.
@@ -255,13 +224,7 @@ to be able to print out of the GIMP on any printer.
 %endif
 
 
-
 %prep
-
-# remove old directory
-rm -rf $RPM_BUILD_DIR/gutenprint-%{version}*
-rm -rf $RPM_BUILD_DIR/gutenprint20060716
-
 # unpack main sources
 %setup -q -n gutenprint-%{version}%{extraversion}
 #setup -q -n gutenprint20060716
@@ -270,9 +233,7 @@ rm -rf $RPM_BUILD_DIR/gutenprint20060716
 perl -p -i -e 's/<Imagem>/<Image>/g' po/pt.po
 
 
-
 %build
-
 # Change compiler flags for debugging when in debug mode
 %if %debug
 export DONT_STRIP=1
@@ -288,29 +249,38 @@ export RPM_OPT_FLAGS="`echo %optflags |sed -e 's/-O3/-g/' |sed -e 's/-O2/-g/'`"
 # Build with all pipes and whistles: GIMP, GhostScript, CUPS, IJS, Foomatic,
 # but without translated PPD files (does not work)
 # Use IJS library provided by this package
+
 %if %debug
 %define enabledebug --enable-debug
 %else
 %define enabledebug %nil
 %endif
-%if %mdv2007
-%define enablelibgutenprintui --disable-libgutenprintui
-%else
-%define enablelibgutenprintui --enable-libgutenprintui
-%endif
+
 %if %{gimpplugin}
-%configure --enable-shared --disable-rpath %enablelibgutenprintui --enable-libgutenprintui2 --without-gimp --with-gimp2 --with-cups --enable-simplified-cups-ppds=yes --with-ijs --with-foomatic --with-foomatic3 --enable-cups-level3-ppds --disable-translated-cups-ppds --disable-cups-level3-ps --disable-static-genppd %enabledebug
+%define enablegimpplugin --without-gimp --with-gimp2
 %else
-%configure --enable-shared --disable-rpath --enable-libgutenprintui --enable-libgutenprintui2 --without-gimp --without-gimp2 --with-cups --enable-simplified-cups-ppds=yes --with-ijs --with-foomatic --with-foomatic3 --enable-cups-level3-ppds --disable-translated-cups-ppds --disable-cups-level3-ps --disable-static-genppd %enabledebug
+%define enablegimpplugin --without-gimp --without-gimp2
 %endif
+
+%configure \
+	--enable-shared \
+	--disable-rpath \
+	--disable-libgutenprintui \
+	--enable-libgutenprintui2 \
+	%enablegimpplugin \
+	--with-cups \
+	--with-ijs \
+	--with-foomatic \
+	--with-foomatic3 \
+	%enabledebug
+
+	#--disable-static-genppd \
 
 # Compile Gutenprint
 %make
 
 
-
 %install
-
 rm -rf %{buildroot}
 
 # Change compiler flags for debugging when in debug mode
@@ -332,9 +302,7 @@ rm -f %{buildroot}%{_prefix}/lib*/cups/backend/epson
 
 # Remove a GTK-1.x file which is installed even when GTK-1.x support
 # is disabled (Gutenprint bug)
-%if %mdv2007
 rm -f %{buildroot}%{_libdir}/pkgconfig/gutenprintui.pc
-%endif
 
 # Correct permissions
 chmod a-x %{buildroot}%{_libdir}/*.la
@@ -348,7 +316,6 @@ chmod a-x %{buildroot}%{_libdir}/*.la
 
 ##### FILES
 
-#BUG? nc 2003-12-06
 %files -n %{libgutenprint}
 %defattr(-,root,root)
 %{_libdir}/libgutenprint.so.*
@@ -366,20 +333,6 @@ chmod a-x %{buildroot}%{_libdir}/*.la
 #{_libdir}/gutenprint/*/modules/*.a
 %{_libdir}/pkgconfig/gutenprint.pc
 %{_includedir}/gutenprint
-
-%if !%mdv2007
-%files -n %{libgutenprintui}
-%defattr(-,root,root)
-%{_libdir}/libgutenprintui.so.*
-
-%files -n %{libgutenprintui}-devel
-%defattr(-,root,root)
-%{_libdir}/libgutenprintui.so
-%{_libdir}/libgutenprintui.la
-%{_libdir}/libgutenprintui.a
-%{_libdir}/pkgconfig/gutenprintui.pc
-%{_includedir}/gutenprintui
-%endif
 
 %files -n %{libgutenprintui2}
 %defattr(-,root,root)
@@ -405,9 +358,10 @@ chmod a-x %{buildroot}%{_libdir}/*.la
 %{_mandir}/man8/cups-*
 %{_bindir}/cups-*
 %{_sbindir}/cups-*
-%{_datadir}/cups/model/*
+#%{_datadir}/cups/model/*
 %{_datadir}/cups/calibrate.ppm
 #attr(0755,root,root) %{_prefix}/lib*/cups/backend/*
+%attr(0755,root,root) %{_prefix}/lib*/cups/driver/gutenprint.5.0
 %attr(0755,root,root) %{_prefix}/lib*/cups/filter/*
 %config(noreplace) %{_sysconfdir}/cups/command.*
 
@@ -431,32 +385,24 @@ chmod a-x %{buildroot}%{_libdir}/*.la
 %{_libdir}/gimp/2.0/plug-ins/print
 %endif
 
-%define info_files gutenprint
-
 %post -n %{libgutenprint} -p /sbin/ldconfig
-
-%if !%mdv2007
-%post -n %{libgutenprintui} -p /sbin/ldconfig
-%endif
 
 %post -n %{libgutenprintui2} -p /sbin/ldconfig
 
 %post common
-for f in %info_files; do %_install_info $f
-done
+%_install_info gutenprint
 :
 
 %post cups
 # Restart the CUPS daemon when it is running, but do not start it when it
 # is not running. The restart of the CUPS daemon updates the CUPS-internal
 # PPD index
-/sbin/service cups condrestart > /dev/null 2>/dev/null || :
+/sbin/service cups condrestart || :
 # Update print queues with Gutenprint CUPS driver
 /usr/sbin/cups-genppdupdate.%{driverversion} > /dev/null 2>/dev/null || :
 
 %post foomatic
 # Update print queues with Gimp-Print/Gutenprint IJS driver
-
 ls /etc/cups/ppd/*.ppd > /dev/null 2>&1 && \
 for f in /etc/cups/ppd/*.ppd; do \
 	queue=`basename ${f%%.ppd}`; \
@@ -469,24 +415,17 @@ exit 0
 
 %postun -n %{libgutenprint} -p /sbin/ldconfig
 
-%if !%mdv2007
-%postun -n %{libgutenprintui} -p /sbin/ldconfig
-%endif
-
 %postun -n %{libgutenprintui2} -p /sbin/ldconfig
 
 %postun common
-for f in %info_files; do %_remove_install_info $f
-done
+%_remove_install_info gutenprint
 :
 
 %postun cups
 # Restart the CUPS daemon when it is running, but do not start it when it
 # is not running. The restart of the CUPS daemon updates the CUPS-internal
 # PPD index
-/sbin/service cups condrestart > /dev/null 2>/dev/null || :
+/sbin/service cups condrestart || :
 
 %clean
 rm -rf %{buildroot}
-
-
