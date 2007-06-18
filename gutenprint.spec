@@ -1,8 +1,8 @@
-%define version 5.0.0.99.1
+%define version 5.0.1
 %define driverversion 5.0
 %define extraversion %nil
 #define extraversion -rc3
-%define release %mkrel 3
+%define release %mkrel 1
 %define gutenprintmajor 2
 %define libgutenprint %mklibname gutenprint %{gutenprintmajor}
 %define gutenprintui2major 1
@@ -42,7 +42,7 @@ BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	foomatic-db
 BuildRequires:	foomatic-db-engine
-BuildRequires:	glib-devel
+#BuildRequires:	glib-devel
 BuildRequires:	libcups-devel >= 1.2.0-0.5361.0mdk
 BuildRequires:	libgtk+2-devel
 BuildRequires:	libijs-devel
