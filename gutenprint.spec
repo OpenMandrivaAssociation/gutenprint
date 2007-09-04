@@ -2,7 +2,7 @@
 %define driverversion 5.0
 %define extraversion %nil
 #define extraversion -rc3
-%define release %mkrel 1
+%define release %mkrel 2
 %define gutenprintmajor 2
 %define libgutenprint %mklibname gutenprint %{gutenprintmajor}
 %define gutenprintui2major 1
@@ -377,7 +377,7 @@ chmod a-x %{buildroot}%{_libdir}/*.la
 %if %{gimpplugin}
 %files gimp2
 %defattr(-,root,root)
-%{_libdir}/gimp/2.0/plug-ins/print
+%{_libdir}/gimp/2.0/plug-ins/gutenprint
 %endif
 
 %post -n %{libgutenprint} -p /sbin/ldconfig
