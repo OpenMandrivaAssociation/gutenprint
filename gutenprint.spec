@@ -2,7 +2,7 @@
 %define driverversion 5.0
 %define extraversion %nil
 #define extraversion -rc3
-%define release %mkrel 2
+%define release %mkrel 3
 %define gutenprintmajor 2
 %define libgutenprint %mklibname gutenprint %{gutenprintmajor}
 %define gutenprintui2major 1
@@ -128,7 +128,6 @@ Group:		Publishing
 Summary: Foomatic data for Gutenprint IJS plugin for GhostScript
 Requires:	gutenprint-ijs == %{version}, foomatic-db, foomatic-db-engine
 Requires:	gutenprint-common >= %{version}-%{release}
-Conflicts:	foomatic-db < 20050101
 Obsoletes:	gimpprint-foomatic
 Provides:	gimpprint-foomatic
 Group:		Publishing
