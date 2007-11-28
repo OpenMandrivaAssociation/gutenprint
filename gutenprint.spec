@@ -2,7 +2,7 @@
 %define driverversion 5.0
 %define extraversion %nil
 #define extraversion -rc3
-%define release %mkrel 4
+%define release %mkrel 5
 %define gutenprintmajor 2
 %define libgutenprint %mklibname gutenprint %{gutenprintmajor}
 %define gutenprintui2major 1
@@ -57,18 +57,16 @@ BuildRequires:	libgimp-devel
 #BuildRequires: tetex-latex ImageMagick docbook-utils sgml-tools
 
 ##### GIMP PRINT SOURCE
-
 Source:	http://cesnet.dl.sourceforge.net/sourceforge/gimp-print/gutenprint-%{version}%{extraversion}.tar.bz2
-#Source: http://heanet.dl.sourceforge.net/sourceforge/gimp-print/gutenprint20060716.tar.bz2
-#Source:	http://gimp-print.sourceforge.net/gutenprint-%{version}-cvs20020820.tar.bz2
 
 ##### GIMP PRINT PATCHES
-
-
+Patch0:		gutenprint-5.0.1-noO6.patch
+Patch1:		gutenprint-5.0.1-menu.patch
+Patch2:		gutenprint-5.0.1-lpstat.patch
+Patch3:		gutenprint-5.0.1-default-a4.patch
 
 ##### BUILD ROOT
-
-BuildRoot:	%_tmppath/%name-%version-%release-root
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 ##### PACKAGE DESCRIPTIONS
 
@@ -225,7 +223,11 @@ to be able to print out of the GIMP on any printer.
 %prep
 # unpack main sources
 %setup -q -n gutenprint-%{version}%{extraversion}
-
+%patch0 -p1 -b .noO6
+%patch1 -p1 -b .menu
+%patch2 -p1 -b .lpstat
+%patch3 -p1 -b .a4
+autoconf
 
 %build
 # Change compiler flags for debugging when in debug mode
@@ -256,14 +258,17 @@ export RPM_OPT_FLAGS="`echo %optflags |sed -e 's/-O3/-g/' |sed -e 's/-O2/-g/'`"
 %define enablegimpplugin --without-gimp --without-gimp2
 %endif
 
-%configure \
+%configure2_5x \
 	--enable-shared \
 	--disable-rpath \
 	--disable-libgutenprintui \
 	--enable-libgutenprintui2 \
-	--disable-static-genppd \
 	%enablegimpplugin \
 	--with-cups \
+	--enable-cups-level3-ppds \
+	--enable-simplified-cups-ppds \
+	--disable-static-genppd \
+	--disable-translated-cups-ppds \
 	--with-ijs \
 	--with-foomatic \
 	--with-foomatic3 \
@@ -354,7 +359,7 @@ chmod a-x %{buildroot}%{_libdir}/*.la
 #%{_datadir}/cups/model/*
 %{_datadir}/cups/calibrate.ppm
 #attr(0755,root,root) %{_prefix}/lib*/cups/backend/*
-%attr(0755,root,root) %{_prefix}/lib*/cups/driver/gutenprint.5.0
+%attr(0755,root,root) %{_prefix}/lib*/cups/driver/gutenprint.%{driverversion}
 %attr(0755,root,root) %{_prefix}/lib*/cups/filter/*
 %config(noreplace) %{_sysconfdir}/cups/command.*
 
@@ -425,3 +430,4 @@ fi
 
 %clean
 rm -rf %{buildroot}
+
