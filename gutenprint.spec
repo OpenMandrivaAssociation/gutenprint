@@ -66,7 +66,6 @@ Patch2:		gutenprint-5.0.1-lpstat.patch
 Patch3:		gutenprint-5.0.1-default-a4.patch
 
 ##### BUILD ROOT
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 ##### PACKAGE DESCRIPTIONS
 
