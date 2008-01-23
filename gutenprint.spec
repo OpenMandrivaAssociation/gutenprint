@@ -2,7 +2,7 @@
 %define driverversion 5.0
 %define extraversion %nil
 #define extraversion -rc3
-%define release %mkrel 1
+%define release %mkrel 2
 %define gutenprintmajor 2
 %define libgutenprint %mklibname gutenprint %{gutenprintmajor}
 %define gutenprintui2major 1
@@ -31,7 +31,7 @@ Summary: Photo-quality printer drivers primarily for inkjet printers
 Name:		gutenprint
 Version:	%{version}
 Release:	%{release}
-License:	GPL
+License:	GPLv2+
 Group:		Publishing
 URL:		http://gimp-print.sourceforge.net/
 
