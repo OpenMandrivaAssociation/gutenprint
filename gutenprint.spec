@@ -2,7 +2,7 @@
 %define driverversion 5.0
 %define extraversion %nil
 #define extraversion -rc3
-%define release %mkrel 2
+%define release %mkrel 3
 %define gutenprintmajor 2
 %define libgutenprint %mklibname gutenprint %{gutenprintmajor}
 %define gutenprintui2major 1
@@ -62,8 +62,10 @@ Source:	http://cesnet.dl.sourceforge.net/sourceforge/gimp-print/gutenprint-%{ver
 ##### GIMP PRINT PATCHES
 Patch0:		gutenprint-5.0.1-noO6.patch
 Patch1:		gutenprint-5.0.1-menu.patch
-Patch2:		gutenprint-5.0.1-lpstat.patch
 Patch3:		gutenprint-5.0.1-default-a4.patch
+Patch4:		gutenprint-5.0.2-optmize.patch
+# https://qa.mandriva.com/show_bug.cgi?id=25453
+Patch5:		gutenprint-5.0.2-locale.patch
 
 ##### BUILD ROOT
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
@@ -225,8 +227,9 @@ to be able to print out of the GIMP on any printer.
 %setup -q -n gutenprint-%{version}%{extraversion}
 %patch0 -p1 -b .noO6
 %patch1 -p1 -b .menu
-%patch2 -p1 -b .lpstat
 %patch3 -p1 -b .a4
+%patch4 -p1
+%patch5 -p1 -b .locale
 autoconf
 
 %build
