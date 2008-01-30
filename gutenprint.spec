@@ -63,7 +63,6 @@ Source:	http://cesnet.dl.sourceforge.net/sourceforge/gimp-print/gutenprint-%{ver
 Patch0:		gutenprint-5.0.1-noO6.patch
 Patch1:		gutenprint-5.0.1-menu.patch
 Patch3:		gutenprint-5.0.1-default-a4.patch
-Patch4:		gutenprint-5.0.2-optmize.patch
 # https://qa.mandriva.com/show_bug.cgi?id=25453
 Patch5:		gutenprint-5.0.2-locale.patch
 
@@ -228,9 +227,7 @@ to be able to print out of the GIMP on any printer.
 %patch0 -p1 -b .noO6
 %patch1 -p1 -b .menu
 %patch3 -p1 -b .a4
-%patch4 -p1
 %patch5 -p1 -b .locale
-autoconf
 
 %build
 # Change compiler flags for debugging when in debug mode
