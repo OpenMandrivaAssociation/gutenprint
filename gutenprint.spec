@@ -383,9 +383,13 @@ chmod a-x %{buildroot}%{_libdir}/*.la
 %{_libdir}/gimp/2.0/plug-ins/gutenprint
 %endif
 
+%if %mdkversion < 200900
 %post -n %{libgutenprint} -p /sbin/ldconfig
+%endif
 
+%if %mdkversion < 200900
 %post -n %{libgutenprintui2} -p /sbin/ldconfig
+%endif
 
 %post common
 %_install_info gutenprint
@@ -411,9 +415,13 @@ for f in /etc/cups/ppd/*.ppd; do \
 done
 exit 0
 
+%if %mdkversion < 200900
 %postun -n %{libgutenprint} -p /sbin/ldconfig
+%endif
 
+%if %mdkversion < 200900
 %postun -n %{libgutenprintui2} -p /sbin/ldconfig
+%endif
 
 %postun common
 %_remove_install_info gutenprint
