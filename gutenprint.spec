@@ -2,7 +2,7 @@
 %define driverversion 5.0
 %define extraversion %nil
 #define extraversion -rc3
-%define release %mkrel 4
+%define release %mkrel 5
 %define gutenprintmajor 2
 %define libgutenprint %mklibname gutenprint %{gutenprintmajor}
 %define gutenprintui2major 1
