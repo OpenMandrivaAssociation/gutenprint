@@ -1,8 +1,8 @@
-%define version 5.0.2
-%define driverversion 5.0
+%define version 5.1.7
+%define driverversion 5.1
 %define extraversion %nil
 #define extraversion -rc3
-%define release %mkrel 5
+%define release %mkrel 1
 %define gutenprintmajor 2
 %define libgutenprint %mklibname gutenprint %{gutenprintmajor}
 %define gutenprintui2major 1
@@ -25,6 +25,7 @@
 
 #define _unpackaged_files_terminate_build       0 
 #define _missing_doc_files_terminate_build      0
+%define _disable_ld_no_undefined 1
 
 
 Summary: Photo-quality printer drivers primarily for inkjet printers
@@ -63,8 +64,6 @@ Source:	http://cesnet.dl.sourceforge.net/sourceforge/gimp-print/gutenprint-%{ver
 Patch0:		gutenprint-5.0.1-noO6.patch
 Patch1:		gutenprint-5.0.1-menu.patch
 Patch3:		gutenprint-5.0.1-default-a4.patch
-# https://qa.mandriva.com/show_bug.cgi?id=25453
-Patch5:		gutenprint-5.0.2-locale.patch
 
 ##### BUILD ROOT
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
@@ -227,7 +226,6 @@ to be able to print out of the GIMP on any printer.
 %patch0 -p1 -b .noO6
 %patch1 -p1 -b .menu
 %patch3 -p1 -b .a4
-%patch5 -p1 -b .locale
 
 %build
 # Change compiler flags for debugging when in debug mode
