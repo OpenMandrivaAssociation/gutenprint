@@ -55,7 +55,7 @@ BuildRequires:	libgimp-devel
 %endif
 
 # Only needed when building Gutenprint from a CVS snapshot
-#BuildRequires: tetex-latex ImageMagick docbook-utils sgml-tools
+#BuildRequires: tetex-latex imagemagick docbook-utils sgml-tools
 
 ##### GIMP PRINT SOURCE
 Source:	http://cesnet.dl.sourceforge.net/sourceforge/gimp-print/gutenprint-%{version}%{extraversion}.tar.bz2
