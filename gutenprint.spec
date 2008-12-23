@@ -10,6 +10,8 @@
 
 %define corposerver %(perl -e 'print ("%release" =~ /mlcs/ ? 1 : 0)')
 
+%define cups_serverbin %{_exec_prefix}/lib/cups
+
 %if %{corposerver}
 %define gimpplugin 0
 %else
@@ -309,8 +311,8 @@ for file in \
   %{buildroot}%{_sbindir}/cups-genppd.5.2 \
   %{buildroot}%{_libdir}/gimp/*/plug-ins/* \
   %{buildroot}%{_libdir}/*.so.* \
-  %{buildroot}%{_libdir}/cups//driver/* \
-  %{buildroot}%{_libdir}/cups/filter/* \
+  %{buildroot}%{cups_serverbin}/driver/* \
+  %{buildroot}%{cups_serverbin}/filter/* \
   %{buildroot}%{_bindir}/*
 do
   chrpath --delete ${file}
