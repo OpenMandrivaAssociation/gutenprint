@@ -1,8 +1,8 @@
-%define version 5.1.7
-%define driverversion 5.1
+%define version 5.2.3
+%define driverversion 5.2
 %define extraversion %nil
 #define extraversion -rc3
-%define release %mkrel 3
+%define release %mkrel 1
 %define gutenprintmajor 2
 %define libgutenprint %mklibname gutenprint %{gutenprintmajor}
 %define gutenprintui2major 1
@@ -49,6 +49,7 @@ BuildRequires:	libgtk+2-devel
 BuildRequires:	libijs-devel
 BuildRequires:	libjpeg-static-devel
 BuildRequires:	libtiff-devel
+BuildRequires:	chrpath
 
 %if %{gimpplugin}
 BuildRequires:	libgimp-devel
@@ -61,9 +62,9 @@ BuildRequires:	libgimp-devel
 Source:	http://cesnet.dl.sourceforge.net/sourceforge/gimp-print/gutenprint-%{version}%{extraversion}.tar.bz2
 
 ##### GIMP PRINT PATCHES
-Patch0:		gutenprint-5.0.1-noO6.patch
+Patch0:		gutenprint-5.2.3-noO6.patch
 Patch1:		gutenprint-5.0.1-menu.patch
-Patch3:		gutenprint-5.0.1-default-a4.patch
+Patch3:		gutenprint-5.2.3-default-a4.patch
 
 ##### BUILD ROOT
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
@@ -303,8 +304,21 @@ rm -f %{buildroot}%{_libdir}/pkgconfig/gutenprintui.pc
 # Correct permissions
 chmod a-x %{buildroot}%{_libdir}/*.la
 
+# Fix up rpath.
+for file in \
+  %{buildroot}%{_sbindir}/cups-genppd.5.2 \
+  %{buildroot}%{_libdir}/gimp/*/plug-ins/* \
+  %{buildroot}%{_libdir}/*.so.* \
+  %{buildroot}%{_libdir}/cups//driver/* \
+  %{buildroot}%{_libdir}/cups/filter/* \
+  %{buildroot}%{_bindir}/*
+do
+  chrpath --delete ${file}
+done
+
+
 # Translation files of Gutenprint
-%find_lang gutenprint
+find %{buildroot} -regex ".*/gutenprint.*.[mp]o" | sed -e "s@^%{buildroot}@@" > gutenprint.lang
 
 # Multiarch setup
 #multiarch_binaries %buildroot%{_bindir}/gutenprint-config
@@ -399,7 +413,7 @@ chmod a-x %{buildroot}%{_libdir}/*.la
 # PPD index
 /sbin/service cups condrestart || :
 # Update print queues with Gutenprint CUPS driver
-/usr/sbin/cups-genppdupdate.%{driverversion} > /dev/null 2>/dev/null || :
+/usr/sbin/cups-genppdupdate > /dev/null 2>/dev/null || :
 
 %post foomatic
 # Update print queues with Gimp-Print/Gutenprint IJS driver
