@@ -1,4 +1,4 @@
-%define version 5.2.3
+%define version 5.2.4
 %define driverversion 5.2
 %define extraversion %nil
 #define extraversion -rc3
@@ -61,10 +61,9 @@ BuildRequires:	libgimp-devel
 #BuildRequires: tetex-latex imagemagick docbook-utils sgml-tools
 
 ##### GIMP PRINT SOURCE
-Source:	http://cesnet.dl.sourceforge.net/sourceforge/gimp-print/gutenprint-%{version}%{extraversion}.tar.bz2
+Source:	http://downloads.sourceforge.net/project/gimp-print/%{name}-%{driverversion}/%{version}/%{name}-%{version}%{extraversion}.tar.bz2
 
 ##### GIMP PRINT PATCHES
-Patch0:		gutenprint-5.2.3-noO6.patch
 Patch1:		gutenprint-5.0.1-menu.patch
 Patch3:		gutenprint-5.2.3-default-a4.patch
 
@@ -226,7 +225,6 @@ to be able to print out of the GIMP on any printer.
 %prep
 # unpack main sources
 %setup -q -n gutenprint-%{version}%{extraversion}
-%patch0 -p1 -b .noO6
 %patch1 -p1 -b .menu
 %patch3 -p1 -b .a4
 
