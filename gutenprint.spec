@@ -1,4 +1,4 @@
-%define version 5.2.5
+%define version 5.2.6
 %define driverversion 5.2
 %define extraversion %nil
 #define extraversion -rc3
