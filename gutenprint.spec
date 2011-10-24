@@ -1,8 +1,8 @@
-%define version 5.2.6
+%define version 5.2.7
 %define driverversion 5.2
 %define extraversion %nil
 #define extraversion -rc3
-%define release %mkrel 2
+%define release %mkrel 1
 %define gutenprintmajor 2
 %define libgutenprint %mklibname gutenprint %{gutenprintmajor}
 %define gutenprintui2major 1
@@ -25,12 +25,11 @@
 # Suppress automatically generated Requires for Perl libraries.
 #define _requires_exceptions perl\(.*\)
 
-#define _unpackaged_files_terminate_build       0 
-#define _missing_doc_files_terminate_build      0
+#define _unpackaged_files_terminate_build	0 
+#define _missing_doc_files_terminate_build	0
 %define _disable_ld_no_undefined 1
 
-
-Summary: Photo-quality printer drivers primarily for inkjet printers
+Summary:	Photo-quality printer drivers primarily for inkjet printers
 Name:		gutenprint
 Version:	%{version}
 Release:	%{release}
@@ -75,37 +74,37 @@ BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 %package -n %{libgutenprint}
 Summary:	Shared library for high-quality image printing
 Group:		Publishing
-Provides:       libgutenprint = %{version}-%{release}
+Provides:	libgutenprint = %{version}-%{release}
 
 %package -n %{libgutenprint}-devel
 Summary:	Headers and links for compiling against libgutenprint
 Group:		Development/C
 Requires:	%{libgutenprint} >= %{version}-%{release}
-Requires:       multiarch-utils
-Provides:       libgutenprint-devel = %{version}-%{release}
-Provides:       gutenprint-devel = %{version}-%{release}
+Requires:	multiarch-utils
+Provides:	libgutenprint-devel = %{version}-%{release}
+Provides:	gutenprint-devel = %{version}-%{release}
 
 %package -n %{libgutenprintui2}
 Summary:	Shared library for Gutenprint GUI with GTK 2.x
 Group:		Publishing
-Provides:       libgutenprintui2 = %{version}-%{release}
+Provides:	libgutenprintui2 = %{version}-%{release}
 
 %package -n %{libgutenprintui2}-devel
 Summary:	Headers and links for compiling against libgutenprintui2
 Group:		Development/C
 Requires:	%{libgutenprintui2} >= %{version}-%{release}
-Requires:       multiarch-utils
-Provides:       libgutenprintui2-devel = %{version}-%{release}
+Requires:	multiarch-utils
+Provides:	libgutenprintui2-devel = %{version}-%{release}
 
 %package common
 Summary: Documentation, samples and translations of Gutenprint
 Obsoletes:	gimpprint-common
 Provides:	gimpprint-common
-Group: 		Publishing
+Group:		Publishing
 
 %package cups
 Summary: Special CUPS printer driver of Gutenprint
-Requires: 	cups >= 1.1
+Requires:	cups >= 1.1
 Requires:	gutenprint-common >= %{version}-%{release}
 Conflicts:	cups-drivers <= 10.1
 %ifarch x86_64
@@ -113,7 +112,7 @@ Conflicts:	cups < 1.2.0-0.5361.0mdk
 %endif
 Obsoletes:	gimpprint-cups
 Provides:	gimpprint-cups
-Group: 		Publishing
+Group:		Publishing
 
 %package ijs
 Summary: Gutenprint IJS plugin for GhostScript
@@ -145,7 +144,7 @@ Summary:	Gutenprint plugin for high-quality image printing
 Group:		Publishing
 Requires:	gimp >= 2.2.7-2mdk
 Requires:	gutenprint-common >= %{version}-%{release}
-Conflicts:      gimp < 2.2.7-2mdk
+Conflicts:	gimp < 2.2.7-2mdk
 Obsoletes:	gimpprint-gimp2
 Provides:	gimpprint-gimp2
 %endif
@@ -321,7 +320,7 @@ done
 find %{buildroot} -regex ".*/gutenprint.*.[mp]o" | sed -e "s@^%{buildroot}@@" > gutenprint.lang
 
 # Multiarch setup
-#multiarch_binaries %buildroot%{_bindir}/gutenprint-config
+#multiarch_binaries % buildroot % {_bindir}/gutenprint-config
 
 
 ##### FILES
@@ -330,7 +329,7 @@ find %{buildroot} -regex ".*/gutenprint.*.[mp]o" | sed -e "s@^%{buildroot}@@" > 
 %defattr(-,root,root)
 %{_libdir}/libgutenprint.so.*
 %dir %{_libdir}/gutenprint/*
-#dir %{_libdir}/gutenprint/*/modules
+#dir % {_libdir}/gutenprint/*/modules
 #{_libdir}/gutenprint/*/modules/*.so
 
 %files -n %{libgutenprint}-devel
@@ -368,9 +367,9 @@ find %{buildroot} -regex ".*/gutenprint.*.[mp]o" | sed -e "s@^%{buildroot}@@" > 
 %{_mandir}/man8/cups-*
 %{_bindir}/cups-*
 %{_sbindir}/cups-*
-#%{_datadir}/cups/model/*
+#% {_datadir}/cups/model/*
 %{_datadir}/cups/calibrate.ppm
-#attr(0755,root,root) %{_prefix}/lib*/cups/backend/*
+#attr(0755,root,root) % {_prefix}/lib*/cups/backend/*
 %attr(0755,root,root) %{_prefix}/lib*/cups/driver/gutenprint.%{driverversion}
 %attr(0755,root,root) %{_prefix}/lib*/cups/filter/*
 %config(noreplace) %{_sysconfdir}/cups/command.*
