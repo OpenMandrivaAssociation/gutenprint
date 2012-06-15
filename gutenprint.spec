@@ -1,4 +1,4 @@
-%define version 5.2.7
+%define version 5.2.8
 %define driverversion 5.2
 %define extraversion %nil
 #define extraversion -rc3
@@ -45,22 +45,22 @@ BuildRequires:	flex
 BuildRequires:	foomatic-db
 BuildRequires:	foomatic-db-engine
 #BuildRequires:	glib-devel
-BuildRequires:	libcups-devel >= 1.2.0-0.5361.0mdk
-BuildRequires:	libgtk+2-devel
+BuildRequires:	cups-devel >= 1.2.0-0.5361.0mdk
+BuildRequires:	gtk+2-devel
 BuildRequires:	libijs-devel
 BuildRequires:	libjpeg-static-devel
 BuildRequires:	libtiff-devel
 BuildRequires:	chrpath
 
 %if %{gimpplugin}
-BuildRequires:	libgimp-devel
+BuildRequires:	gimp-devel
 %endif
 
 # Only needed when building Gutenprint from a CVS snapshot
 #BuildRequires: tetex-latex imagemagick docbook-utils sgml-tools
 
 ##### GIMP PRINT SOURCE
-Source:	http://downloads.sourceforge.net/project/gimp-print/%{name}-%{driverversion}/%{version}/%{name}-%{version}%{extraversion}.tar.bz2
+Source0:	http://downloads.sourceforge.net/project/gimp-print/%{name}-%{driverversion}/%{version}/%{name}-%{version}%{extraversion}.tar.bz2
 
 ##### GIMP PRINT PATCHES
 Patch1:		gutenprint-5.0.1-menu.patch
@@ -300,8 +300,7 @@ rm -f %{buildroot}%{_prefix}/lib*/cups/backend/epson
 # is disabled (Gutenprint bug)
 rm -f %{buildroot}%{_libdir}/pkgconfig/gutenprintui.pc
 
-# Correct permissions
-chmod a-x %{buildroot}%{_libdir}/*.la
+rm -rf  %{buildroot}%{_libdir}/*.la
 
 # Fix up rpath.
 for file in \
@@ -335,7 +334,6 @@ find %{buildroot} -regex ".*/gutenprint.*.[mp]o" | sed -e "s@^%{buildroot}@@" > 
 %files -n %{libgutenprint}-devel
 %defattr(-,root,root)
 %{_libdir}/libgutenprint.so
-%{_libdir}/libgutenprint.la
 %{_libdir}/libgutenprint.a
 #{_libdir}/gutenprint/*/modules/*.so
 #{_libdir}/gutenprint/*/modules/*.la
@@ -350,7 +348,6 @@ find %{buildroot} -regex ".*/gutenprint.*.[mp]o" | sed -e "s@^%{buildroot}@@" > 
 %files -n %{libgutenprintui2}-devel
 %defattr(-,root,root)
 %{_libdir}/libgutenprintui2.so
-%{_libdir}/libgutenprintui2.la
 %{_libdir}/libgutenprintui2.a
 %{_libdir}/pkgconfig/gutenprintui2.pc
 %{_includedir}/gutenprintui2
