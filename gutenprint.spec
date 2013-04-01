@@ -48,7 +48,7 @@ BuildRequires:	foomatic-db-engine
 BuildRequires:	cups-devel >= 1.2.0
 BuildRequires:	gtk+2-devel
 BuildRequires:	libijs-devel
-BuildRequires:	libjpeg-static-devel
+BuildRequires:	jpeg-static-devel
 BuildRequires:	libtiff-devel
 BuildRequires:	chrpath
 
