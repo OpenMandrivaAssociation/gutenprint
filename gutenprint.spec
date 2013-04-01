@@ -423,14 +423,6 @@ for f in /etc/cups/ppd/*.ppd; do \
 done
 exit 0
 
-%if %mdkversion < 200900
-%postun -n %{libgutenprint} -p /sbin/ldconfig
-%endif
-
-%if %mdkversion < 200900
-%postun -n %{libgutenprintui2} -p /sbin/ldconfig
-%endif
-
 %postun common
 %_remove_install_info gutenprint
 :
