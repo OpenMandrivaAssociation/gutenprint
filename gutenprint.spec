@@ -399,10 +399,6 @@ find %{buildroot} -regex ".*/gutenprint.*.[mp]o" | sed -e "s@^%{buildroot}@@" > 
 %post -n %{libgutenprintui2} -p /sbin/ldconfig
 %endif
 
-%post common
-%_install_info gutenprint
-:
-
 %post cups
 # Restart the CUPS daemon when it is running, but do not start it when it
 # is not running. The restart of the CUPS daemon updates the CUPS-internal
@@ -422,10 +418,6 @@ for f in /etc/cups/ppd/*.ppd; do \
 			>/dev/null 2>&1 || :; \
 done
 exit 0
-
-%postun common
-%_remove_install_info gutenprint
-:
 
 %postun cups
 # Restart the CUPS daemon when it is running, but do not start it when it
