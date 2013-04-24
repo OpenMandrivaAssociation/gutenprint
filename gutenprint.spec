@@ -2,7 +2,6 @@
 %define driverversion 5.2
 %define extraversion %nil
 #define extraversion -rc3
-%define release %mkrel 1
 %define gutenprintmajor 2
 %define libgutenprint %mklibname gutenprint %{gutenprintmajor}
 %define gutenprintui2major 1
@@ -32,7 +31,7 @@
 Summary:	Photo-quality printer drivers primarily for inkjet printers
 Name:		gutenprint
 Version:	%{version}
-Release:	%{release}
+Release:	2
 License:	GPLv2+
 Group:		Publishing
 URL:		http://gimp-print.sourceforge.net/
@@ -46,7 +45,7 @@ BuildRequires:	foomatic-db
 BuildRequires:	foomatic-db-engine
 #BuildRequires:	glib-devel
 BuildRequires:	cups-devel >= 1.2.0
-BuildRequires:	gtk+2-devel
+BuildRequires:	pkgconfig(gtk+-2.0)
 BuildRequires:	libijs-devel
 BuildRequires:	jpeg-static-devel
 BuildRequires:	libtiff-devel
@@ -64,10 +63,8 @@ Source0:	http://downloads.sourceforge.net/project/gimp-print/%{name}-%{driverver
 
 ##### GIMP PRINT PATCHES
 Patch1:		gutenprint-5.0.1-menu.patch
+Patch2:		gutenprint-5.2.7-fix-brother-hl-2030-support.patch
 Patch3:		gutenprint-5.2.3-default-a4.patch
-
-##### BUILD ROOT
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 ##### PACKAGE DESCRIPTIONS
 
@@ -225,6 +222,7 @@ to be able to print out of the GIMP on any printer.
 # unpack main sources
 %setup -q -n gutenprint-%{version}%{extraversion}
 %patch1 -p1 -b .menu
+%patch2 -p0 -b .bro
 %patch3 -p1 -b .a4
 
 %build
@@ -277,8 +275,6 @@ export RPM_OPT_FLAGS="`echo %optflags |sed -e 's/-O3/-g/' |sed -e 's/-O2/-g/'`"
 
 
 %install
-rm -rf %{buildroot}
-
 # Change compiler flags for debugging when in debug mode
 %if %debug
 export DONT_STRIP=1
@@ -325,14 +321,12 @@ find %{buildroot} -regex ".*/gutenprint.*.[mp]o" | sed -e "s@^%{buildroot}@@" > 
 ##### FILES
 
 %files -n %{libgutenprint}
-%defattr(-,root,root)
 %{_libdir}/libgutenprint.so.*
 %dir %{_libdir}/gutenprint/*
 #dir % {_libdir}/gutenprint/*/modules
 #{_libdir}/gutenprint/*/modules/*.so
 
 %files -n %{libgutenprint}-devel
-%defattr(-,root,root)
 %{_libdir}/libgutenprint.so
 %{_libdir}/libgutenprint.a
 #{_libdir}/gutenprint/*/modules/*.so
@@ -342,25 +336,21 @@ find %{buildroot} -regex ".*/gutenprint.*.[mp]o" | sed -e "s@^%{buildroot}@@" > 
 %{_includedir}/gutenprint
 
 %files -n %{libgutenprintui2}
-%defattr(-,root,root)
 %{_libdir}/libgutenprintui2.so.*
 
 %files -n %{libgutenprintui2}-devel
-%defattr(-,root,root)
 %{_libdir}/libgutenprintui2.so
 %{_libdir}/libgutenprintui2.a
 %{_libdir}/pkgconfig/gutenprintui2.pc
 %{_includedir}/gutenprintui2
 
 %files common -f gutenprint.lang
-%defattr(-,root,root)
 %doc ABOUT-NLS AUTHORS NEWS README
 %{_bindir}/testpattern
 %{_datadir}/gutenprint
 %dir %{_libdir}/gutenprint
 
 %files cups
-%defattr(-,root,root)
 %{_mandir}/man8/cups-*
 %{_bindir}/cups-*
 %{_sbindir}/cups-*
@@ -372,16 +362,13 @@ find %{buildroot} -regex ".*/gutenprint.*.[mp]o" | sed -e "s@^%{buildroot}@@" > 
 %config(noreplace) %{_sysconfdir}/cups/command.*
 
 %files ijs
-%defattr(-,root,root)
 %{_mandir}/man1/ijsgutenprint.1*
 %{_bindir}/ijsgutenprint*
 
 %files foomatic
-%defattr(-,root,root)
 %_datadir/foomatic/db/*/*/*.xml
 
 %files escputil
-%defattr(-,root,root)
 %{_mandir}/man1/escputil*
 %attr(0755,lp,sys) %{_bindir}/escputil
 
@@ -389,14 +376,6 @@ find %{buildroot} -regex ".*/gutenprint.*.[mp]o" | sed -e "s@^%{buildroot}@@" > 
 %files gimp2
 %defattr(-,root,root)
 %{_libdir}/gimp/2.0/plug-ins/gutenprint
-%endif
-
-%if %mdkversion < 200900
-%post -n %{libgutenprint} -p /sbin/ldconfig
-%endif
-
-%if %mdkversion < 200900
-%post -n %{libgutenprintui2} -p /sbin/ldconfig
 %endif
 
 %post cups
@@ -427,129 +406,4 @@ exit 0
 if [ $1 -eq 1 ]; then
 	/sbin/service cups condrestart || :
 fi
-
-%clean
-rm -rf %{buildroot}
-
-
-
-%changelog
-* Mon Jul 09 2012 Alexander Khrukin <akhrukin@mandriva.org> 5.2.9-1mdv2012.0
-+ Revision: 808563
-- version update 5.2.9
-
-* Fri Jun 15 2012 Alexander Khrukin <akhrukin@mandriva.org> 5.2.8-1
-+ Revision: 805848
-- version update 5.2.8
-
-* Mon Oct 24 2011 Alexander Barakin <abarakin@mandriva.org> 5.2.7-1
-+ Revision: 705895
-- upstream version update and rpmlint fixes
-
-* Tue May 03 2011 Oden Eriksson <oeriksson@mandriva.com> 5.2.6-2
-+ Revision: 664962
-- mass rebuild
-
-* Sun Nov 28 2010 Sandro Cazzaniga <kharec@mandriva.org> 5.2.6-1mdv2011.0
-+ Revision: 602333
-- update to new version 5.2.6
-
-* Fri Feb 12 2010 Frederik Himpe <fhimpe@mandriva.org> 5.2.5-1mdv2010.1
-+ Revision: 505053
-- update to new version 5.2.5
-
-* Sat Aug 01 2009 Frederik Himpe <fhimpe@mandriva.org> 5.2.4-1mdv2010.0
-+ Revision: 407312
-- Update to new version 5.2.4
-- Remove patch integrated upstream
-
-* Tue Dec 23 2008 Frederik Himpe <fhimpe@mandriva.org> 5.2.3-1mdv2009.1
-+ Revision: 317984
-- Update to new version 5.2.3
-- Rediff patch to use A4 by default, remove margins work-around as
-  instructed by upstream comment in papers.xml
-- Update no -O6 CFLAG patch from Fedora
-- Use chrpath to remove rpaths (from Fedora)
-- Gutenprint now needs installation of some po files in addition
-  to mo files.
-- postinstall script: genppdupdate.5.1 renamed to genppdupdate
-
-  + Oden Eriksson <oeriksson@mandriva.com>
-    - lowercase ImageMagick
-
-* Sun Nov 09 2008 Oden Eriksson <oeriksson@mandriva.com> 5.1.7-3mdv2009.1
-+ Revision: 301533
-- rebuilt against new libxcb
-
-* Tue Jun 24 2008 Tiago Salem <salem@mandriva.com.br> 5.1.7-2mdv2009.0
-+ Revision: 228552
-- rebuild to fix lzma payload issue
-
-* Wed Jun 18 2008 Tiago Salem <salem@mandriva.com.br> 5.1.7-1mdv2009.0
-+ Revision: 225977
-- version 5.1.7
-- remove locale patch as it is already in upstream source code.
-
-  + Thierry Vignaud <tv@mandriva.org>
-    - rebuild
-
-  + Pixel <pixel@mandriva.com>
-    - do not call ldconfig in %%post/%%postun, it is now handled by filetriggers
-
-* Wed Jan 30 2008 Marcelo Ricardo Leitner <mrl@mandriva.com> 5.0.2-4mdv2008.1
-+ Revision: 160235
-- Remove patch optmize, as it may introduce problems with unstable networks.
-- Use the same patch for locale as upstream used.
-- Do not run autoconf on %%prep, it's not needed.
-
-* Tue Jan 29 2008 Marcelo Ricardo Leitner <mrl@mandriva.com> 5.0.2-3mdv2008.1
-+ Revision: 159908
-- Rewrite lpstat patch in a better way. Closes: #25453
-
-* Wed Jan 23 2008 Funda Wang <fwang@mandriva.org> 5.0.2-2mdv2008.1
-+ Revision: 156979
-- rebuild
-
-* Tue Jan 08 2008 Marcelo Ricardo Leitner <mrl@mandriva.com> 5.0.2-1mdv2008.1
-+ Revision: 146776
-- New upstream: 5.0.2
-
-  + Olivier Blin <blino@mandriva.org>
-    - restore BuildRoot
-
-  + Thierry Vignaud <tv@mandriva.org>
-    - kill re-definition of %%buildroot on Pixel's request
-
-* Wed Nov 28 2007 Giuseppe Ghibò <ghibo@mandriva.com> 5.0.1-5mdv2008.1
-+ Revision: 113646
-- Disable -O6 compilation flag (Patch0).
-- Let "Print with GutenPrint..." entry in GIMP "File" menu appear at a nicer place (Patch1).
-- Default to A4 paper (Patch3).
-
-* Thu Sep 13 2007 Marcelo Ricardo Leitner <mrl@mandriva.com> 5.0.1-4mdv2008.0
-+ Revision: 85217
-- gutenprint-foomatic should not require any driver, as it is just a database package.
-
-* Thu Sep 13 2007 Marcelo Ricardo Leitner <mrl@mandriva.com> 5.0.1-3mdv2008.0
-+ Revision: 85033
-- Remove too-old conflict pointed by pixel.
-
-* Tue Sep 04 2007 Marcelo Ricardo Leitner <mrl@mandriva.com> 5.0.1-2mdv2008.0
-+ Revision: 79404
-- Rebuilt against new ghostscript.
-
-* Mon Jun 18 2007 Marcelo Ricardo Leitner <mrl@mandriva.com> 5.0.1-1mdv2008.0
-+ Revision: 41029
-- New stable upstream: 5.0.1
-
-* Wed May 16 2007 Marcelo Ricardo Leitner <mrl@mandriva.com> 5.0.0.99.1-3mdv2008.0
-+ Revision: 27398
-- Do not restart the service while removing the old package during an upgrade,
-  as it is already restart by the post section of the new one.
-- New upstream: 5.0.0.99.1, with full support for CUPS 1.2
-- Major specfile cleanup
-- Do not redirect cups condrestart, as the user must be able to know
-  that it is being restarted and if it failed to start.
-- Special note: upstream now defaults to not generate ppd files when using CUPS
-  1.2.
 
