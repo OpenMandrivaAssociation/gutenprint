@@ -322,8 +322,8 @@ fi
 %{_bindir}/cups-*
 %{_sbindir}/cups-*
 %{_datadir}/cups/calibrate.ppm
-%{_libdir}/cups/driver/gutenprint.%{drvver}
-%{_libdir}/cups/filter/*
+%{cups_serverbin}/driver/gutenprint.%{drvver}
+%{cups_serverbin}/filter/*
 %{_mandir}/man8/cups-*
 
 %files ijs
