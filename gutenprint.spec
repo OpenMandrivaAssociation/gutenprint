@@ -1,14 +1,17 @@
-%define version 5.2.9
-%define driverversion 5.2
-%define extraversion %nil
-#define extraversion -rc3
-%define gutenprintmajor 2
-%define libgutenprint %mklibname gutenprint %{gutenprintmajor}
-%define gutenprintui2major 1
-%define libgutenprintui2 %mklibname gutenprintui2_ %{gutenprintui2major}
+%define _disable_ld_no_undefined 1
+%define debug 0
 
-%define corposerver %(perl -e 'print ("%release" =~ /mlcs/ ? 1 : 0)')
+%define drvver	5.2
+%define major	2
+%define libname %mklibname gutenprint %{major}
+%define devname %mklibname gutenprint -d
 
+%define uiapi	2
+%define uimajor	1
+%define libnameui %mklibname gutenprintui %{uiapi} %{uimajor}
+%define devnameui %mklibname gutenprintui -d
+
+%define corposerver %(perl -e 'print ("%{release}" =~ /mlcs/ ? 1 : 0)')
 %define cups_serverbin %{_exec_prefix}/lib/cups
 
 %if %{corposerver}
@@ -17,136 +20,31 @@
 %define gimpplugin 1
 %endif
 
-%define debug 0
-
-##### RPM PROBLEM WORKAROUNDS
-
-# Suppress automatically generated Requires for Perl libraries.
-#define _requires_exceptions perl\(.*\)
-
-#define _unpackaged_files_terminate_build	0 
-#define _missing_doc_files_terminate_build	0
-%define _disable_ld_no_undefined 1
-
 Summary:	Photo-quality printer drivers primarily for inkjet printers
 Name:		gutenprint
-Version:	%{version}
-Release:	2
+Version:	5.2.9
+Release:	3
 License:	GPLv2+
 Group:		Publishing
-URL:		http://gimp-print.sourceforge.net/
-
-##### GENERAL BUILDREQUIRES
-
-BuildRequires:	autoconf2.5
-BuildRequires:	bison
-BuildRequires:	flex
-BuildRequires:	foomatic-db
-BuildRequires:	foomatic-db-engine
-#BuildRequires:	glib-devel
-BuildRequires:	cups-devel >= 1.2.0
-BuildRequires:	pkgconfig(gtk+-2.0)
-BuildRequires:	libijs-devel
-BuildRequires:	jpeg-static-devel
-BuildRequires:	libtiff-devel
-BuildRequires:	chrpath
-
-%if %{gimpplugin}
-BuildRequires:	gimp-devel
-%endif
-
-# Only needed when building Gutenprint from a CVS snapshot
-#BuildRequires: tetex-latex imagemagick docbook-utils sgml-tools
-
-##### GIMP PRINT SOURCE
-Source0:	http://downloads.sourceforge.net/project/gimp-print/%{name}-%{driverversion}/%{version}/%{name}-%{version}%{extraversion}.tar.bz2
-
-##### GIMP PRINT PATCHES
+Url:		http://gimp-print.sourceforge.net/
+Source0:	http://downloads.sourceforge.net/project/gimp-print/%{name}-%{drvver}/%{version}/%{name}-%{version}.tar.bz2
 Patch1:		gutenprint-5.0.1-menu.patch
 Patch2:		gutenprint-5.2.7-fix-brother-hl-2030-support.patch
 Patch3:		gutenprint-5.2.3-default-a4.patch
 
-##### PACKAGE DESCRIPTIONS
-
-%package -n %{libgutenprint}
-Summary:	Shared library for high-quality image printing
-Group:		Publishing
-Provides:	libgutenprint = %{version}-%{release}
-
-%package -n %{libgutenprint}-devel
-Summary:	Headers and links for compiling against libgutenprint
-Group:		Development/C
-Requires:	%{libgutenprint} >= %{version}-%{release}
-Requires:	multiarch-utils
-Provides:	libgutenprint-devel = %{version}-%{release}
-Provides:	gutenprint-devel = %{version}-%{release}
-
-%package -n %{libgutenprintui2}
-Summary:	Shared library for Gutenprint GUI with GTK 2.x
-Group:		Publishing
-Provides:	libgutenprintui2 = %{version}-%{release}
-
-%package -n %{libgutenprintui2}-devel
-Summary:	Headers and links for compiling against libgutenprintui2
-Group:		Development/C
-Requires:	%{libgutenprintui2} >= %{version}-%{release}
-Requires:	multiarch-utils
-Provides:	libgutenprintui2-devel = %{version}-%{release}
-
-%package common
-Summary: Documentation, samples and translations of Gutenprint
-Obsoletes:	gimpprint-common
-Provides:	gimpprint-common
-Group:		Publishing
-
-%package cups
-Summary: Special CUPS printer driver of Gutenprint
-Requires:	cups >= 1.1
-Requires:	gutenprint-common >= %{version}-%{release}
-Conflicts:	cups-drivers <= 10.1
-%ifarch x86_64
-Conflicts:	cups < 1.2.0-0.5361.0mdk
-%endif
-Obsoletes:	gimpprint-cups
-Provides:	gimpprint-cups
-Group:		Publishing
-
-%package ijs
-Summary: Gutenprint IJS plugin for GhostScript
-Requires:	ghostscript >= 7.05
-Requires:	gutenprint-common >= %{version}-%{release}
-Conflicts:	printer-filters <= 10.1
-Obsoletes:	gimpprint-ijs
-Provides:	gimpprint-ijs
-Group:		Publishing
-
-%package foomatic
-Summary: Foomatic data for Gutenprint IJS plugin for GhostScript
-Requires:	foomatic-db, foomatic-db-engine
-Obsoletes:	gimpprint-foomatic
-Provides:	gimpprint-foomatic
-Group:		Publishing
-
-%package escputil
-Summary: Gutenprint ink level monitor and printer maintenance tool
-Requires:	gutenprint-common >= %{version}-%{release}
-Conflicts:	printer-utils <= 10.1
-Obsoletes:	gimpprint-escputil
-Provides:	gimpprint-escputil
-Group:		Publishing
-
+BuildRequires:	bison
+BuildRequires:	chrpath
+BuildRequires:	flex
+BuildRequires:	foomatic-db
+BuildRequires:	foomatic-db-engine
+BuildRequires:	cups-devel >= 1.2.0
+BuildRequires:	jpeg-devel
+BuildRequires:	pkgconfig(gtk+-2.0)
+BuildRequires:	pkgconfig(ijs)
+BuildRequires:	pkgconfig(libtiff-4)
 %if %{gimpplugin}
-%package gimp2
-Summary:	Gutenprint plugin for high-quality image printing
-Group:		Publishing
-Requires:	gimp >= 2.2.7-2mdk
-Requires:	gutenprint-common >= %{version}-%{release}
-Conflicts:	gimp < 2.2.7-2mdk
-Obsoletes:	gimpprint-gimp2
-Provides:	gimpprint-gimp2
+BuildRequires:	pkgconfig(gimp-2.0)
 %endif
-
-##### DESCRIPTION TEXTS
 
 %description
 Gutenprint is a high quality printer driver suite for photo-quality
@@ -160,25 +58,58 @@ Keep in mind that the leader of this project is hobby photographer and
 wanted to get his 6-ink Epson Stylus Photo EX working in its best
 quality without necessity of proprietary software.
 
-%description -n %{libgutenprint}
+%package -n %{libname}
+Summary:	Shared library for high-quality image printing
+Group:		Publishing
+
+%description -n %{libname}
 This is a high-quality printing library used by the Gutenprint plugin,
 the Gutenprint IJS color/photo inkjet/laser driver for GhostScript,
 and by specialized CUPS drivers.
 
-%description -n %{libgutenprint}-devel
-These are the links and header files to compile applications which
-should use the libgutenprint library.
+%package -n %{devname}
+Summary:	Headers and links for compiling against libname
+Group:		Development/C
+Requires:	%{libname} >= %{version}-%{release}
+Provides:	%{name}-devel = %{version}-%{release}
+Obsoletes:	%{_lib}gutenprint2-devel < 5.2.9-3
 
-%description -n %{libgutenprintui2}
+%description -n %{devname}
+These are the links and header files to compile applications which
+should use the libname library.
+
+%package -n %{libnameui}
+Summary:	Shared library for Gutenprint GUI with GTK 2.x
+Group:		Publishing
+
+%description -n %{libnameui}
 This is a GTK-2.x-based GUI library to create dialogs to control
 the Gutenprint printer drivers.
 
-%description -n %{libgutenprintui2}-devel
+%package -n %{devnameui}
+Summary:	Headers and links for compiling against libnameui
+Group:		Development/C
+Requires:	%{libnameui} >= %{version}-%{release}
+Provides:	%{name}ui-devel = %{version}-%{release}
+Obsoletes:	%{_lib}gutenprintui2_1-devel < 5.2.9-3
+
+%description -n %{devnameui}
 These are the links and header files to compile applications which
-should use the libgutenprintui2 library.
+should use the libnameui library.
+
+%package common
+Summary:	Documentation, samples and translations of Gutenprint
+Provides:	gimpprint-common
+Group:		Publishing
 
 %description common
 Documentation, sample files, and translations of Gutenprint.
+
+%package cups
+Summary:	Special CUPS printer driver of Gutenprint
+Group:		Publishing
+Requires:	cups >= 1.1
+Requires:	gutenprint-common >= %{version}-%{release}
 
 %description cups
 This package contains a special Gutenprint printer driver to be used
@@ -188,6 +119,12 @@ to set up print queues with this driver.
 With the Gutenprint CUPS drivers you can do a colour caibration. Use
 the program "cups-calibrate" to perform it.
 
+%package ijs
+Summary:	Gutenprint IJS plugin for GhostScript
+Group:		Publishing
+Requires:	ghostscript >= 7.05
+Requires:	gutenprint-common >= %{version}-%{release}
+
 %description ijs
 This package contains a Gutenprint plugin for GhostScripts IJS
 interface. This gives access to the high printing quality of
@@ -195,16 +132,35 @@ Gutenprint with every GhostScript version containing the IJS
 interface. Install also the gutenprint-foomatic package for easy setup
 of print queues with arbitrary printing systems.
 
+%package foomatic
+Summary:	Foomatic data for Gutenprint IJS plugin for GhostScript
+Group:		Publishing
+Requires:	foomatic-db
+Requires:	foomatic-db-engine
+
 %description foomatic
 Foomatic data for the Gutenprint IJS plug-in for GhostScript. You need
 this package to set up print queues with printerdrake, KDE Printing
 Manager, or directly with Foomatic.
+
+%package escputil
+Summary:	Gutenprint ink level monitor and printer maintenance tool
+Group:		Publishing
+Requires:	gutenprint-common >= %{version}-%{release}
 
 %description escputil
 This is a command line tool to query ink levels and to maintain
 Epson's inkjet printers. It allows ink level query, head alignment,
 nozzle checking, and nozzle cleaning. If you want a graphical
 interface, use mtink instead.
+
+%if %{gimpplugin}
+%package gimp2
+Summary:	Gutenprint plugin for high-quality image printing
+Group:		Publishing
+Requires:	gimp
+Requires:	gutenprint-common >= %{version}-%{release}
+%endif
 
 %if %{gimpplugin}
 %description gimp2
@@ -217,13 +173,9 @@ printers give very high qualities, too. It can also output PostScript
 to be able to print out of the GIMP on any printer.
 %endif
 
-
 %prep
-# unpack main sources
-%setup -q -n gutenprint-%{version}%{extraversion}
-%patch1 -p1 -b .menu
-%patch2 -p0 -b .bro
-%patch3 -p1 -b .a4
+%setup -q
+%apply_patches
 
 %build
 # Change compiler flags for debugging when in debug mode
@@ -249,15 +201,14 @@ export RPM_OPT_FLAGS="`echo %optflags |sed -e 's/-O3/-g/' |sed -e 's/-O2/-g/'`"
 %endif
 
 %if %{gimpplugin}
-%define enablegimpplugin --without-gimp --with-gimp2
+%define enablegimpplugin --with-gimp2
 %else
-%define enablegimpplugin --without-gimp --without-gimp2
+%define enablegimpplugin --without-gimp2
 %endif
 
 %configure2_5x \
+	--disable-static \
 	--enable-shared \
-	--disable-rpath \
-	--disable-libgutenprintui \
 	--enable-libgutenprintui2 \
 	%enablegimpplugin \
 	--with-cups \
@@ -265,7 +216,6 @@ export RPM_OPT_FLAGS="`echo %optflags |sed -e 's/-O3/-g/' |sed -e 's/-O2/-g/'`"
 	--enable-simplified-cups-ppds \
 	--disable-static-genppd \
 	--disable-translated-cups-ppds \
-	--with-ijs \
 	--with-foomatic \
 	--with-foomatic3 \
 	%enabledebug
@@ -283,7 +233,7 @@ export CXXFLAGS="`echo %optflags |sed -e 's/-O3/-g/' |sed -e 's/-O2/-g/'`"
 export RPM_OPT_FLAGS="`echo %optflags |sed -e 's/-O3/-g/' |sed -e 's/-O2/-g/'`"
 %endif
 
-make DESTDIR=%{buildroot} install
+%makeinstall_std
 
 # Remove /usr/share/foomatic/kitload.log
 rm -f %{buildroot}%{_datadir}/foomatic/kitload.log
@@ -295,8 +245,6 @@ rm -f %{buildroot}%{_prefix}/lib*/cups/backend/epson
 # Remove a GTK-1.x file which is installed even when GTK-1.x support
 # is disabled (Gutenprint bug)
 rm -f %{buildroot}%{_libdir}/pkgconfig/gutenprintui.pc
-
-rm -rf  %{buildroot}%{_libdir}/*.la
 
 # Fix up rpath.
 for file in \
@@ -310,73 +258,9 @@ do
   chrpath --delete ${file}
 done
 
-
 # Translation files of Gutenprint
-find %{buildroot} -regex ".*/gutenprint.*.[mp]o" | sed -e "s@^%{buildroot}@@" > gutenprint.lang
-
-# Multiarch setup
-#multiarch_binaries % buildroot % {_bindir}/gutenprint-config
-
-
-##### FILES
-
-%files -n %{libgutenprint}
-%{_libdir}/libgutenprint.so.*
-%dir %{_libdir}/gutenprint/*
-#dir % {_libdir}/gutenprint/*/modules
-#{_libdir}/gutenprint/*/modules/*.so
-
-%files -n %{libgutenprint}-devel
-%{_libdir}/libgutenprint.so
-%{_libdir}/libgutenprint.a
-#{_libdir}/gutenprint/*/modules/*.so
-#{_libdir}/gutenprint/*/modules/*.la
-#{_libdir}/gutenprint/*/modules/*.a
-%{_libdir}/pkgconfig/gutenprint.pc
-%{_includedir}/gutenprint
-
-%files -n %{libgutenprintui2}
-%{_libdir}/libgutenprintui2.so.*
-
-%files -n %{libgutenprintui2}-devel
-%{_libdir}/libgutenprintui2.so
-%{_libdir}/libgutenprintui2.a
-%{_libdir}/pkgconfig/gutenprintui2.pc
-%{_includedir}/gutenprintui2
-
-%files common -f gutenprint.lang
-%doc ABOUT-NLS AUTHORS NEWS README
-%{_bindir}/testpattern
-%{_datadir}/gutenprint
-%dir %{_libdir}/gutenprint
-
-%files cups
-%{_mandir}/man8/cups-*
-%{_bindir}/cups-*
-%{_sbindir}/cups-*
-#% {_datadir}/cups/model/*
-%{_datadir}/cups/calibrate.ppm
-#attr(0755,root,root) % {_prefix}/lib*/cups/backend/*
-%attr(0755,root,root) %{_prefix}/lib*/cups/driver/gutenprint.%{driverversion}
-%attr(0755,root,root) %{_prefix}/lib*/cups/filter/*
-%config(noreplace) %{_sysconfdir}/cups/command.*
-
-%files ijs
-%{_mandir}/man1/ijsgutenprint.1*
-%{_bindir}/ijsgutenprint*
-
-%files foomatic
-%_datadir/foomatic/db/*/*/*.xml
-
-%files escputil
-%{_mandir}/man1/escputil*
-%attr(0755,lp,sys) %{_bindir}/escputil
-
-%if %{gimpplugin}
-%files gimp2
-%defattr(-,root,root)
-%{_libdir}/gimp/2.0/plug-ins/gutenprint
-%endif
+rm -f %{buildroot}/%{_datadir}/locale/*/*.po
+%find_lang %{name}
 
 %post cups
 # Restart the CUPS daemon when it is running, but do not start it when it
@@ -393,7 +277,7 @@ for f in /etc/cups/ppd/*.ppd; do \
 	queue=`basename ${f%%.ppd}`; \
 	egrep -q '\*FoomaticIDs.*(gimp-print|gutenprint)' $f && \
 		foomatic-configure -n $queue -f \
-			-d gutenprint-ijs.%{driverversion} \
+			-d gutenprint-ijs.%{drvver} \
 			>/dev/null 2>&1 || :; \
 done
 exit 0
@@ -406,4 +290,55 @@ exit 0
 if [ $1 -eq 1 ]; then
 	/sbin/service cups condrestart || :
 fi
+
+%files -n %{libname}
+%{_libdir}/libgutenprint.so.%{major}*
+%dir %{_libdir}/gutenprint/*
+
+%files -n %{devname}
+%{_libdir}/libgutenprint.so
+%{_libdir}/pkgconfig/gutenprint.pc
+%{_includedir}/gutenprint
+
+%files -n %{libnameui}
+%{_libdir}/libgutenprintui%{uiapi}.so.%{uimajor}*
+
+%files -n %{devnameui}
+%{_libdir}/libgutenprintui2.so
+%{_libdir}/pkgconfig/gutenprintui2.pc
+%{_includedir}/gutenprintui2
+
+%files common -f %{name}.lang
+%doc ABOUT-NLS AUTHORS NEWS README
+%{_bindir}/testpattern
+%{_datadir}/gutenprint
+%dir %{_libdir}/gutenprint
+%dir %{_libdir}/gutenprint/%{drvver}
+%dir %{_libdir}/gutenprint/%{drvver}/modules
+%{_libdir}/gutenprint/%{drvver}/modules/*.so
+
+%files cups
+%config(noreplace) %{_sysconfdir}/cups/command.*
+%{_bindir}/cups-*
+%{_sbindir}/cups-*
+%{_datadir}/cups/calibrate.ppm
+%{_libdir}/cups/driver/gutenprint.%{drvver}
+%{_libdir}/cups/filter/*
+%{_mandir}/man8/cups-*
+
+%files ijs
+%{_bindir}/ijsgutenprint*
+%{_mandir}/man1/ijsgutenprint.1*
+
+%files foomatic
+%{_datadir}/foomatic/db/*/*/*.xml
+
+%files escputil
+%attr(0755,lp,sys) %{_bindir}/escputil
+%{_mandir}/man1/escputil*
+
+%if %{gimpplugin}
+%files gimp2
+%{_libdir}/gimp/2.0/plug-ins/gutenprint
+%endif
 
