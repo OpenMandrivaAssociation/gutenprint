@@ -23,7 +23,7 @@
 Summary:	Photo-quality printer drivers primarily for inkjet printers
 Name:		gutenprint
 Version:	5.2.9
-Release:	5
+Release:	6
 License:	GPLv2+
 Group:		Publishing
 Url:		http://gimp-print.sourceforge.net/
