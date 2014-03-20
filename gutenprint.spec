@@ -49,6 +49,7 @@ BuildRequires:	jpeg-devel
 BuildRequires:	pkgconfig(gtk+-2.0)
 BuildRequires:	pkgconfig(ijs)
 BuildRequires:	pkgconfig(libtiff-4)
+BuildRequires:	pkgconfig(libusb-1.0)
 %if %{gimpplugin}
 BuildRequires:	pkgconfig(gimp-2.0)
 %endif
