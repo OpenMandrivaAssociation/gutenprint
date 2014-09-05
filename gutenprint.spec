@@ -1,15 +1,15 @@
 %define _disable_ld_no_undefined 1
 %define debug 0
 
-%define drvver	5.2
-%define major	2
+%define drvver 5.2
+%define major 2
 %define libname %mklibname gutenprint %{major}
 %define devname %mklibname gutenprint -d
 
-%define snapshot 20140122
+%define snapshot %nil
 
-%define uiapi	2
-%define uimajor	1
+%define uiapi 2
+%define uimajor 1
 %define libnameui %mklibname gutenprintui %{uiapi} %{uimajor}
 %define devnameui %mklibname gutenprintui -d
 
@@ -29,7 +29,7 @@ Version:	5.2.10
 Release:	0.%snapshot.1
 Source0:	http://heanet.dl.sourceforge.net/project/gimp-print/snapshots/gutenprint20140122.tar.bz2
 %else
-Release:	3
+Release:	1
 Source0:	http://downloads.sourceforge.net/project/gimp-print/%{name}-%{drvver}/%{version}/%{name}-%{version}.tar.bz2
 %endif
 License:	GPLv2+
@@ -355,4 +355,3 @@ fi
 %files gimp2
 %{_libdir}/gimp/2.0/plug-ins/gutenprint
 %endif
-
