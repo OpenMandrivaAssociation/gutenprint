@@ -1,13 +1,15 @@
 %define _disable_ld_no_undefined 1
 %define debug 0
 
-%define drvver	5.2
-%define major	2
+%define drvver 5.2
+%define major 2
 %define libname %mklibname gutenprint %{major}
 %define devname %mklibname gutenprint -d
 
-%define uiapi	2
-%define uimajor	1
+%define snapshot %nil
+
+%define uiapi 2
+%define uimajor 1
 %define libnameui %mklibname gutenprintui %{uiapi} %{uimajor}
 %define devnameui %mklibname gutenprintui -d
 
@@ -22,12 +24,17 @@
 
 Summary:	Photo-quality printer drivers primarily for inkjet printers
 Name:		gutenprint
-Version:	5.2.9
-Release:	4
+Version:	5.2.10
+%if "%snapshot" != ""
+Release:	0.%snapshot.1
+Source0:	http://heanet.dl.sourceforge.net/project/gimp-print/snapshots/gutenprint20140122.tar.bz2
+%else
+Release:	1
+Source0:	http://downloads.sourceforge.net/project/gimp-print/%{name}-%{drvver}/%{version}/%{name}-%{version}.tar.bz2
+%endif
 License:	GPLv2+
 Group:		Publishing
 Url:		http://gimp-print.sourceforge.net/
-Source0:	http://downloads.sourceforge.net/project/gimp-print/%{name}-%{drvver}/%{version}/%{name}-%{version}.tar.bz2
 Patch1:		gutenprint-5.0.1-menu.patch
 Patch2:		gutenprint-5.2.7-fix-brother-hl-2030-support.patch
 Patch3:		gutenprint-5.2.3-default-a4.patch
@@ -42,6 +49,7 @@ BuildRequires:	jpeg-devel
 BuildRequires:	pkgconfig(gtk+-2.0)
 BuildRequires:	pkgconfig(ijs)
 BuildRequires:	pkgconfig(libtiff-4)
+BuildRequires:	pkgconfig(libusb-1.0)
 %if %{gimpplugin}
 BuildRequires:	pkgconfig(gimp-2.0)
 %endif
@@ -174,7 +182,11 @@ to be able to print out of the GIMP on any printer.
 %endif
 
 %prep
+%if "%snapshot" != ""
+%setup -q -n %{name}%{snapshot}
+%else
 %setup -q
+%endif
 %apply_patches
 
 %build
@@ -239,8 +251,8 @@ export RPM_OPT_FLAGS="`echo %optflags |sed -e 's/-O3/-g/' |sed -e 's/-O2/-g/'`"
 rm -f %{buildroot}%{_datadir}/foomatic/kitload.log
 
 # Remove "canon" and "epson" CUPS backends
-rm -f %{buildroot}%{_prefix}/lib*/cups/backend/canon
-rm -f %{buildroot}%{_prefix}/lib*/cups/backend/epson
+#rm -f %{buildroot}%{_prefix}/lib*/cups/backend/canon
+#rm -f %{buildroot}%{_prefix}/lib*/cups/backend/epson
 
 # Remove a GTK-1.x file which is installed even when GTK-1.x support
 # is disabled (Gutenprint bug)
@@ -322,6 +334,8 @@ fi
 %{_bindir}/cups-*
 %{_sbindir}/cups-*
 %{_datadir}/cups/calibrate.ppm
+%{_datadir}/cups/usb/net.sf.gimp-print.usb-quirks
+%{cups_serverbin}/backend/*
 %{cups_serverbin}/driver/gutenprint.%{drvver}
 %{cups_serverbin}/filter/*
 %{_mandir}/man8/cups-*
@@ -341,4 +355,3 @@ fi
 %files gimp2
 %{_libdir}/gimp/2.0/plug-ins/gutenprint
 %endif
-
