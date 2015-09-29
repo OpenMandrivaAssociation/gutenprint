@@ -53,6 +53,7 @@ BuildRequires:	pkgconfig(libusb-1.0)
 %if %{gimpplugin}
 BuildRequires:	pkgconfig(gimp-2.0)
 %endif
+Requires(post,postun):	cups
 
 %description
 Gutenprint is a high quality printer driver suite for photo-quality
