@@ -6,7 +6,7 @@
 %define libname %mklibname gutenprint %{major}
 %define devname %mklibname gutenprint -d
 
-%define snapshot %nil
+%define snapshot pre2
 
 %define uiapi 2
 %define uimajor 1
@@ -24,10 +24,10 @@
 
 Summary:	Photo-quality printer drivers primarily for inkjet printers
 Name:		gutenprint
-Version:	5.2.10
+Version:	5.2.11
 %if "%snapshot" != ""
 Release:	0.%snapshot.1
-Source0:	http://heanet.dl.sourceforge.net/project/gimp-print/snapshots/gutenprint20140122.tar.bz2
+Source0:	http://heanet.dl.sourceforge.net/project/gimp-print/snapshots/gutenprint-%{version}-%{snapshot}.tar.bz2
 %else
 Release:	4
 Source0:	http://downloads.sourceforge.net/project/gimp-print/%{name}-%{drvver}/%{version}/%{name}-%{version}.tar.bz2
@@ -184,7 +184,7 @@ to be able to print out of the GIMP on any printer.
 
 %prep
 %if "%snapshot" != ""
-%setup -q -n %{name}%{snapshot}
+%setup -q -n %{name}-%{version}-%{snapshot}
 %else
 %setup -q
 %endif
