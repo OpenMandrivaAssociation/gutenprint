@@ -29,7 +29,7 @@ Version:	5.2.11
 Release:	0.%snapshot.1
 Source0:	http://heanet.dl.sourceforge.net/project/gimp-print/snapshots/gutenprint-%{version}-%{snapshot}.tar.bz2
 %else
-Release:	5
+Release:	6
 Source0:	http://downloads.sourceforge.net/project/gimp-print/%{name}-%{drvver}/%{version}/%{name}-%{version}.tar.bz2
 %endif
 License:	GPLv2+
