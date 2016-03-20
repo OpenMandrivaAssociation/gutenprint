@@ -6,7 +6,7 @@
 %define libname %mklibname gutenprint %{major}
 %define devname %mklibname gutenprint -d
 
-%define snapshot pre2
+%define snapshot %nil
 
 %define uiapi 2
 %define uimajor 1
@@ -29,7 +29,7 @@ Version:	5.2.11
 Release:	0.%snapshot.1
 Source0:	http://heanet.dl.sourceforge.net/project/gimp-print/snapshots/gutenprint-%{version}-%{snapshot}.tar.bz2
 %else
-Release:	6
+Release:	1
 Source0:	http://downloads.sourceforge.net/project/gimp-print/%{name}-%{drvver}/%{version}/%{name}-%{version}.tar.bz2
 %endif
 License:	GPLv2+
@@ -302,7 +302,7 @@ exit 0
 # PPD index
 # Do not restart on upgrades, as it is already restarted by post section.
 if [ $1 -eq 1 ]; then
-	/bin/systemctl try-restart cups.socket ||:
+    /bin/systemctl try-restart cups.socket ||:
     /bin/systemctl try-restart cups.path ||:
     /bin/systemctl try-restart cups.service ||:
 fi
