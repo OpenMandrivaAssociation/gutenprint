@@ -24,12 +24,12 @@
 
 Summary:	Photo-quality printer drivers primarily for inkjet printers
 Name:		gutenprint
-Version:	5.2.10
+Version:	5.2.11
 %if "%snapshot" != ""
 Release:	0.%snapshot.1
-Source0:	http://heanet.dl.sourceforge.net/project/gimp-print/snapshots/gutenprint20140122.tar.bz2
+Source0:	http://heanet.dl.sourceforge.net/project/gimp-print/snapshots/gutenprint-%{version}-%{snapshot}.tar.bz2
 %else
-Release:	1
+Release:	0.1
 Source0:	http://downloads.sourceforge.net/project/gimp-print/%{name}-%{drvver}/%{version}/%{name}-%{version}.tar.bz2
 %endif
 License:	GPLv2+
@@ -53,6 +53,7 @@ BuildRequires:	pkgconfig(libusb-1.0)
 %if %{gimpplugin}
 BuildRequires:	pkgconfig(gimp-2.0)
 %endif
+Requires(post,postun):	cups
 
 %description
 Gutenprint is a high quality printer driver suite for photo-quality
@@ -183,7 +184,7 @@ to be able to print out of the GIMP on any printer.
 
 %prep
 %if "%snapshot" != ""
-%setup -q -n %{name}%{snapshot}
+%setup -q -n %{name}-%{version}-%{snapshot}
 %else
 %setup -q
 %endif
@@ -218,7 +219,7 @@ export RPM_OPT_FLAGS="`echo %optflags |sed -e 's/-O3/-g/' |sed -e 's/-O2/-g/'`"
 %define enablegimpplugin --without-gimp2
 %endif
 
-%configure2_5x \
+%configure \
 	--disable-static \
 	--enable-shared \
 	--enable-libgutenprintui2 \
@@ -234,7 +235,6 @@ export RPM_OPT_FLAGS="`echo %optflags |sed -e 's/-O3/-g/' |sed -e 's/-O2/-g/'`"
 
 # Compile Gutenprint
 %make
-
 
 %install
 # Change compiler flags for debugging when in debug mode
@@ -278,7 +278,9 @@ rm -f %{buildroot}/%{_datadir}/locale/*/*.po
 # Restart the CUPS daemon when it is running, but do not start it when it
 # is not running. The restart of the CUPS daemon updates the CUPS-internal
 # PPD index
-/sbin/service cups condrestart || :
+/bin/systemctl try-restart cups.socket ||:
+/bin/systemctl try-restart cups.path ||:
+/bin/systemctl try-restart cups.service ||:
 # Update print queues with Gutenprint CUPS driver
 /usr/sbin/cups-genppdupdate > /dev/null 2>/dev/null || :
 
@@ -300,7 +302,9 @@ exit 0
 # PPD index
 # Do not restart on upgrades, as it is already restarted by post section.
 if [ $1 -eq 1 ]; then
-	/sbin/service cups condrestart || :
+    /bin/systemctl try-restart cups.socket ||:
+    /bin/systemctl try-restart cups.path ||:
+    /bin/systemctl try-restart cups.service ||:
 fi
 
 %files -n %{libname}
