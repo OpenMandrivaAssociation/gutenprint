@@ -24,7 +24,7 @@
 
 Summary:	Photo-quality printer drivers primarily for inkjet printers
 Name:		gutenprint
-Version:	5.2.11
+Version:	5.2.12
 %if "%snapshot" != ""
 Release:	0.%snapshot.1
 Source0:	http://heanet.dl.sourceforge.net/project/gimp-print/snapshots/gutenprint-%{version}-%{snapshot}.tar.bz2
@@ -38,6 +38,9 @@ Url:		http://gimp-print.sourceforge.net/
 Patch1:		gutenprint-5.0.1-menu.patch
 Patch2:		gutenprint-5.2.7-fix-brother-hl-2030-support.patch
 Patch3:		gutenprint-5.2.3-default-a4.patch
+
+Obsoletes:	%{name}-ijs < %{EVRD}
+Obsoletes:	%{name}-foomatic < %{EVRD}
 
 BuildRequires:	bison
 BuildRequires:	chrpath
@@ -343,13 +346,6 @@ fi
 %{cups_serverbin}/driver/gutenprint.%{drvver}
 %{cups_serverbin}/filter/*
 %{_mandir}/man8/cups-*
-
-%files ijs
-%{_bindir}/ijsgutenprint*
-%{_mandir}/man1/ijsgutenprint.1*
-
-%files foomatic
-%{_datadir}/foomatic/db/*/*/*.xml
 
 %files escputil
 %attr(0755,lp,sys) %{_bindir}/escputil

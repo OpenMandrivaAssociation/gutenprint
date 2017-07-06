@@ -1,11 +1,11 @@
---- gutenprint20140122/src/xml/printers.xml.0002~	2014-01-25 15:39:19.922918677 +0100
-+++ gutenprint20140122/src/xml/printers.xml	2014-01-25 15:39:55.382919142 +0100
-@@ -1590,7 +1590,7 @@
-       <printer translate="name" name="Brother HL-1850" driver="brother-hl-1850" manufacturer="Brother" model="6" parameters="pcl_laser_params" foomaticid="Brother-HL-1850" />
-       <printer translate="name" name="Brother HL-1870N" driver="brother-hl-1870n" manufacturer="Brother" model="6" parameters="pcl_laser_params" foomaticid="Brother-HL-1870N" />
+--- gutenprint-5.2.12/src/xml/printers.xml.0002~	2017-07-06 13:01:52.407639307 +0200
++++ gutenprint-5.2.12/src/xml/printers.xml	2017-07-06 13:02:25.350508341 +0200
+@@ -1930,7 +1930,7 @@
+       <printer translate="name" name="Brother HL-1850" driver="brother-hl-1850" manufacturer="Brother" model="6" parameters="pcl_laser_params" />
+       <printer translate="name" name="Brother HL-1870N" driver="brother-hl-1870n" manufacturer="Brother" model="6" parameters="pcl_laser_params" />
        <!-- Brother HL-2030 series -->
--      <printer translate="name" name="Brother HL-2030" deviceid="MFG:Brother;MDL:HL-2030 series;CMD:PJL,HBP;" driver="brother-hl-2030" manufacturer="Brother" model="6" parameters="pcl_laser_params" foomaticid="Brother-HL-2030" />
-+      <printer translate="name" name="Brother HL-2030" deviceid="MFG:Brother;MDL:HL-2030 series;CMD:PJL,HBP;" driver="brother-hl-1250" manufacturer="Brother" model="6" parameters="pcl_laser_params" foomaticid="Brother-HL-2030" />
-       <printer translate="name" name="Brother HL-2035" driver="brother-hl-2035" manufacturer="Brother" model="6" parameters="pcl_laser_params" foomaticid="Brother-HL-2035" />
+-      <printer translate="name" name="Brother HL-2030" deviceid="MFG:Brother;MDL:HL-2030 series;CMD:PJL,HBP;" driver="brother-hl-2030" manufacturer="Brother" model="6" parameters="pcl_laser_params" />
++      <printer translate="name" name="Brother HL-2030" deviceid="MFG:Brother;MDL:HL-2030 series;CMD:PJL,HBP;" driver="brother-hl-1250" manufacturer="Brother" model="6" parameters="pcl_laser_params" />
+       <printer translate="name" name="Brother HL-2035" driver="brother-hl-2035" manufacturer="Brother" model="6" parameters="pcl_laser_params" />
        <!-- -->
-       <printer translate="name" name="Brother HL-2060" driver="brother-hl-2060" manufacturer="Brother" model="6" parameters="pcl_laser_params" foomaticid="Brother-HL-2060" />
+       <printer translate="name" name="Brother HL-2060" driver="brother-hl-2060" manufacturer="Brother" model="6" parameters="pcl_laser_params" />
