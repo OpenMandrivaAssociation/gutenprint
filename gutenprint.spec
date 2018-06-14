@@ -6,7 +6,7 @@
 %define libname %mklibname gutenprint %{major}
 %define devname %mklibname gutenprint -d
 
-%define snapshot pre1
+%define snapshot pre
 
 %define uiapi 2
 %define uimajor 1
@@ -24,20 +24,20 @@
 
 Summary:	Photo-quality printer drivers primarily for inkjet printers
 Name:		gutenprint
-Version:	5.2.13
-%if "%snapshot" != ""
-Release:	0.%snapshot.1
-Source0:	https://downloads.sourceforge.net/project/gimp-print/gutenprint-5.2/%{version}-%{snapshot}/gutenprint-%{version}-%{snapshot}.tar.bz2
-%else
+Version:	5.2.14
+#%%%if "%%snapshot" != ""
+#Release:	0.%%snapshot.1
+#Source0:	https://downloads.sourceforge.net/project/gimp-print/gutenprint-5.2/%%{version}-%%{snapshot}/gutenprint-%%{version}-%%{snapshot}.tar.bz2
+#%%else
 Release:	1
 Source0:	http://downloads.sourceforge.net/project/gimp-print/%{name}-%{drvver}/%{version}/%{name}-%{version}.tar.bz2
-%endif
+#%%endif
 License:	GPLv2+
 Group:		Publishing
 Url:		http://gimp-print.sourceforge.net/
 Patch1:		gutenprint-5.0.1-menu.patch
-Patch2:		gutenprint-5.2.7-fix-brother-hl-2030-support.patch
-Patch3:		gutenprint-5.2.3-default-a4.patch
+#Patch2:		gutenprint-5.2.7-fix-brother-hl-2030-support.patch
+#Patch3:		gutenprint-5.2.3-default-a4.patch
 
 Obsoletes:	%{name}-ijs < %{EVRD}
 Obsoletes:	%{name}-foomatic < %{EVRD}
@@ -186,11 +186,11 @@ to be able to print out of the GIMP on any printer.
 %endif
 
 %prep
-%if "%snapshot" != ""
-%setup -q -n %{name}-%{version}-%{snapshot}
-%else
+#%%if "%snapshot" != ""
+#%%setup -q -n %{name}-%{version}-%{snapshot}
+#%%else
 %setup -q
-%endif
+#%%endif
 %apply_patches
 
 %build
