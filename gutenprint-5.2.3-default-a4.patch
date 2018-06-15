@@ -1,9 +1,12 @@
---- gutenprint-5.2.3/src/xml/papers.xml.a4	2008-12-23 11:21:32.000000000 +0100
-+++ gutenprint-5.2.3/src/xml/papers.xml	2008-12-23 11:22:46.000000000 +0100
-@@ -45,6 +45,17 @@
-  *   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+diff --git a/src/xml/papers.xml b/src/xml/papers.xml
+index 2404134..0f3e29e 100644
+--- a/src/xml/papers.xml
++++ b/src/xml/papers.xml
+@@ -43,6 +43,18 @@
+  *   along with this program.  If not, see https://www.gnu.org/licenses/.
  </copyright>
    <paperdef>
++    </paper>
 +    <paper name="A4">
 +      <description translate="value" value="A4"/>
 +      <comment value="210mm x 297mm"/>
@@ -18,7 +21,7 @@
  <!-- GROUP: Imperial -->
      <paper name="Letter">
        <description translate="value" value="Letter"/>
-@@ -316,17 +327,6 @@
+@@ -499,17 +511,6 @@
        <height value="1191"/>
        <unit value="metric"/>
      </paper>

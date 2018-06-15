@@ -36,8 +36,8 @@ License:	GPLv2+
 Group:		Publishing
 Url:		http://gimp-print.sourceforge.net/
 Patch1:		gutenprint-5.0.1-menu.patch
-#Patch2:		gutenprint-5.2.7-fix-brother-hl-2030-support.patch
-#Patch3:		gutenprint-5.2.3-default-a4.patch
+Patch2:		gutenprint-5.2.7-fix-brother-hl-2030-support.patch
+Patch3:		gutenprint-5.2.3-default-a4.patch
 
 Obsoletes:	%{name}-ijs < %{EVRD}
 Obsoletes:	%{name}-foomatic < %{EVRD}

@@ -1,11 +1,12 @@
---- gutenprint-5.2.12/src/xml/printers.xml.0002~	2017-07-06 13:01:52.407639307 +0200
-+++ gutenprint-5.2.12/src/xml/printers.xml	2017-07-06 13:02:25.350508341 +0200
-@@ -1930,7 +1930,7 @@
+diff --git a/src/xml/papers.xml b/src/xml/papers.xml
+index 32573ea..754ac92 100644
+--- a/src/xml/printers.xml
++++ b/src/xml/printers.xml
+@@ -2130,6 +2130,7 @@
+       <printer translate="name" name="Brother HL-1670N" driver="brother-hl-1670n" manufacturer="Brother" model="6" parameters="pcl_laser_params" />
        <printer translate="name" name="Brother HL-1850" driver="brother-hl-1850" manufacturer="Brother" model="6" parameters="pcl_laser_params" />
        <printer translate="name" name="Brother HL-1870N" driver="brother-hl-1870n" manufacturer="Brother" model="6" parameters="pcl_laser_params" />
-       <!-- Brother HL-2030 series -->
--      <printer translate="name" name="Brother HL-2030" deviceid="MFG:Brother;MDL:HL-2030 series;CMD:PJL,HBP;" driver="brother-hl-2030" manufacturer="Brother" model="6" parameters="pcl_laser_params" />
-+      <printer translate="name" name="Brother HL-2030" deviceid="MFG:Brother;MDL:HL-2030 series;CMD:PJL,HBP;" driver="brother-hl-1250" manufacturer="Brother" model="6" parameters="pcl_laser_params" />
-       <printer translate="name" name="Brother HL-2035" driver="brother-hl-2035" manufacturer="Brother" model="6" parameters="pcl_laser_params" />
-       <!-- -->
++      <printer translate="name" name="Brother HL-2030" deviceid="MFG:Brother;MDL:HL-2030 series;CMD:PJL,HBP;" driver="brother-hl-1250" manufacturer="Brother" model="6" par    ameters="pcl_laser_params" />
        <printer translate="name" name="Brother HL-2060" driver="brother-hl-2060" manufacturer="Brother" model="6" parameters="pcl_laser_params" />
+       <printer translate="name" name="Brother HL-2250DN" driver="brother-hl-2250dn" manufacturer="Brother" model="62" parameters="pcl_laser_params" />
+       <printer translate="name" name="Brother HL-2400CeN" driver="brother-hl-2400cen" manufacturer="Brother" model="50002" parameters="pcl_laser_params">EXPERIMENTAL</printer>
