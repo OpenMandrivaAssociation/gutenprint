@@ -42,6 +42,15 @@ Patch3:		gutenprint-5.2.3-default-a4.patch
 Obsoletes:	%{name}-ijs < %{EVRD}
 Obsoletes:	%{name}-foomatic < %{EVRD}
 
+BuildRequires:	pkgconfig(com_err)
+BuildRequires:	pkgconfig(mit-krb5-gssapi)
+BuildRequires:	pkgconfig(mit-krb5)
+BuildRequires:	pkgconfig(krb5-gssapi)
+BuildRequires:	pkgconfig(kdb)
+BuildRequires:	pkgconfig(kadm-server)
+BuildRequires:	pkgconfig(kadm-client)
+BuildRequires:	pkgconfig(gssrpc)
+BuildRequires:	pkgconfig(krb5)
 BuildRequires:	bison
 BuildRequires:	chrpath
 BuildRequires:	flex
