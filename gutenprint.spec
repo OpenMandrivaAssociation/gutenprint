@@ -29,7 +29,7 @@ Version:	5.2.14
 #Release:	0.%%snapshot.1
 #Source0:	https://downloads.sourceforge.net/project/gimp-print/gutenprint-5.2/%%{version}-%%{snapshot}/gutenprint-%%{version}-%%{snapshot}.tar.bz2
 #%%else
-Release:	2
+Release:	3
 Source0:	http://downloads.sourceforge.net/project/gimp-print/%{name}-%{drvver}/%{version}/%{name}-%{version}.tar.bz2
 #%%endif
 License:	GPLv2+
