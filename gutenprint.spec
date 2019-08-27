@@ -1,15 +1,15 @@
 %define _disable_ld_no_undefined 1
 %define debug 0
 
-%define drvver 5.2
-%define major 2
+%define drvver 5.3
+%define major 9
 %define libname %mklibname gutenprint %{major}
 %define devname %mklibname gutenprint -d
 
 %define snapshot pre
 
 %define uiapi 2
-%define uimajor 1
+%define uimajor 2
 %define libnameui %mklibname gutenprintui %{uiapi} %{uimajor}
 %define devnameui %mklibname gutenprintui -d
 
@@ -24,13 +24,13 @@
 
 Summary:	Photo-quality printer drivers primarily for inkjet printers
 Name:		gutenprint
-Version:	5.2.14
+Version:	5.3.3
 #%%%if "%%snapshot" != ""
 #Release:	0.%%snapshot.1
 #Source0:	https://downloads.sourceforge.net/project/gimp-print/gutenprint-5.2/%%{version}-%%{snapshot}/gutenprint-%%{version}-%%{snapshot}.tar.bz2
 #%%else
-Release:	3
-Source0:	http://downloads.sourceforge.net/project/gimp-print/%{name}-%{drvver}/%{version}/%{name}-%{version}.tar.bz2
+Release:	1
+Source0:	http://downloads.sourceforge.net/project/gimp-print/%{name}-%{drvver}/%{version}/%{name}-%{version}.tar.xz
 #%%endif
 License:	GPLv2+
 Group:		Publishing
@@ -272,7 +272,7 @@ rm -f %{buildroot}%{_libdir}/pkgconfig/gutenprintui.pc
 
 # Fix up rpath.
 for file in \
-  %{buildroot}%{_sbindir}/cups-genppd.5.2 \
+  %{buildroot}%{_sbindir}/cups-genppd.%{drvver} \
   %{buildroot}%{_libdir}/gimp/*/plug-ins/* \
   %{buildroot}%{_libdir}/*.so.* \
   %{buildroot}%{cups_serverbin}/driver/* \
@@ -343,6 +343,7 @@ fi
 %dir %{_libdir}/gutenprint
 %dir %{_libdir}/gutenprint/%{drvver}
 %dir %{_libdir}/gutenprint/%{drvver}/modules
+%{_libdir}/gutenprint/%{drvver}/config.summary
 %{_libdir}/gutenprint/%{drvver}/modules/*.so
 
 %files cups

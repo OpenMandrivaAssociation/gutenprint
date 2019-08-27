@@ -1,12 +1,11 @@
-diff --git a/src/xml/papers.xml b/src/xml/papers.xml
-index 32573ea..754ac92 100644
---- a/src/xml/printers.xml
-+++ b/src/xml/printers.xml
-@@ -2130,6 +2130,7 @@
+diff -up gutenprint-5.3.3/src/xml/printers/pcl.xml.omv~ gutenprint-5.3.3/src/xml/printers/pcl.xml
+--- gutenprint-5.3.3/src/xml/printers/pcl.xml.omv~	2019-08-27 14:10:54.077195767 +0200
++++ gutenprint-5.3.3/src/xml/printers/pcl.xml	2019-08-27 14:11:26.849325104 +0200
+@@ -84,6 +84,7 @@
        <printer translate="name" name="Brother HL-1670N" driver="brother-hl-1670n" manufacturer="Brother" model="6" parameters="pcl_laser_params" />
        <printer translate="name" name="Brother HL-1850" driver="brother-hl-1850" manufacturer="Brother" model="6" parameters="pcl_laser_params" />
        <printer translate="name" name="Brother HL-1870N" driver="brother-hl-1870n" manufacturer="Brother" model="6" parameters="pcl_laser_params" />
-+      <printer translate="name" name="Brother HL-2030" deviceid="MFG:Brother;MDL:HL-2030 series;CMD:PJL,HBP;" driver="brother-hl-1250" manufacturer="Brother" model="6" par    ameters="pcl_laser_params" />
++      <printer translate="name" name="Brother HL-2030" deviceid="MFG:Brother;MDL:HL-2030 series;CMD:PJL,HBP;" driver="brother-hl-1250" manufacturer="Brother" model="6" parameters="pcl_laser_params" />
        <printer translate="name" name="Brother HL-2060" driver="brother-hl-2060" manufacturer="Brother" model="6" parameters="pcl_laser_params" />
        <printer translate="name" name="Brother HL-2250DN" driver="brother-hl-2250dn" manufacturer="Brother" model="62" parameters="pcl_laser_params" />
        <printer translate="name" name="Brother HL-2400CeN" driver="brother-hl-2400cen" manufacturer="Brother" model="50002" parameters="pcl_laser_params">EXPERIMENTAL</printer>

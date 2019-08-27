@@ -1,12 +1,10 @@
-diff --git a/src/xml/papers.xml b/src/xml/papers.xml
-index 2404134..0f3e29e 100644
---- a/src/xml/papers.xml
-+++ b/src/xml/papers.xml
-@@ -43,6 +43,18 @@
+diff -up gutenprint-5.3.3/src/xml/papers/standard.xml.omv~ gutenprint-5.3.3/src/xml/papers/standard.xml
+--- gutenprint-5.3.3/src/xml/papers/standard.xml.omv~	2019-08-27 14:12:56.755688043 +0200
++++ gutenprint-5.3.3/src/xml/papers/standard.xml	2019-08-27 14:13:28.968820739 +0200
+@@ -43,6 +43,17 @@
   *   along with this program.  If not, see https://www.gnu.org/licenses/.
  </copyright>
-   <paperdef>
-+    </paper>
+   <paperdef name="standard">
 +    <paper name="A4">
 +      <description translate="value" value="A4"/>
 +      <comment value="210mm x 297mm"/>
@@ -21,7 +19,7 @@ index 2404134..0f3e29e 100644
  <!-- GROUP: Imperial -->
      <paper name="Letter">
        <description translate="value" value="Letter"/>
-@@ -499,17 +511,6 @@
+@@ -387,17 +398,6 @@
        <height value="1191"/>
        <unit value="metric"/>
      </paper>
