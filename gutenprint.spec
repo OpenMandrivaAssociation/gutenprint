@@ -200,7 +200,7 @@ to be able to print out of the GIMP on any printer.
 #%%else
 %setup -q
 #%%endif
-%apply_patches
+%autopatch -p1
 
 %build
 # Change compiler flags for debugging when in debug mode
