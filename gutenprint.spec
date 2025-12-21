@@ -42,6 +42,11 @@ Patch3:		gutenprint-5.2.3-default-a4.patch
 Obsoletes:	%{name}-ijs < %{EVRD}
 Obsoletes:	%{name}-foomatic < %{EVRD}
 
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	pkgconfig(com_err)
 BuildRequires:	pkgconfig(mit-krb5-gssapi)
 BuildRequires:	pkgconfig(mit-krb5)
