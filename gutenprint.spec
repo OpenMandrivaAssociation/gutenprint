@@ -24,12 +24,12 @@
 
 Summary:	Photo-quality printer drivers primarily for inkjet printers
 Name:		gutenprint
-Version:	5.3.4
+Version:	5.3.5
 #%%%if "%%snapshot" != ""
 #Release:	0.%%snapshot.2
 #Source0:	https://downloads.sourceforge.net/project/gimp-print/gutenprint-5.2/%%{version}-%%{snapshot}/gutenprint-%%{version}-%%{snapshot}.tar.bz2
 #%%else
-Release:	2
+Release:	1
 Source0:	http://downloads.sourceforge.net/project/gimp-print/%{name}-%{drvver}/%{version}/%{name}-%{version}.tar.xz
 #%%endif
 License:	GPLv2+
